@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>a2v2.ai Business Plan 2026 - CEO Planning Wizard</title>
+    <title>a2v2.ai Business Plan 2026 - CEO Planning & Goal Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -13,6 +13,7 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --purple: #8b5cf6;
+            --cyan: #06b6d4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,10 +45,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-        }
+        .header-actions { display: flex; gap: 1rem; }
 
         .btn {
             padding: 0.5rem 1rem;
@@ -58,30 +56,13 @@
             transition: all 0.3s;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: #e2e8f0;
-        }
-
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: #e2e8f0; }
         .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 60px);
-        }
+        .main-container { display: flex; min-height: calc(100vh - 60px); }
 
-        /* Sidebar Navigation */
         .sidebar {
             width: 280px;
             background: rgba(15, 23, 42, 0.8);
@@ -93,17 +74,8 @@
             overflow-y: auto;
         }
 
-        .nav-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .nav-section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #64748b;
-            margin-bottom: 0.75rem;
-            letter-spacing: 0.05em;
-        }
+        .nav-section { margin-bottom: 1.5rem; }
+        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; color: #64748b; margin-bottom: 0.75rem; letter-spacing: 0.05em; }
 
         .nav-item {
             display: flex;
@@ -117,19 +89,9 @@
             color: #94a3b8;
         }
 
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: #e2e8f0;
-        }
-
-        .nav-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .nav-item.completed {
-            border-left: 3px solid var(--success);
-        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: #e2e8f0; }
+        .nav-item.active { background: var(--primary); color: white; }
+        .nav-item.completed { border-left: 3px solid var(--success); }
 
         .nav-item .step-num {
             width: 24px;
@@ -143,63 +105,21 @@
             font-weight: 600;
         }
 
-        .nav-item.active .step-num {
-            background: rgba(255,255,255,0.2);
-        }
+        .nav-item.active .step-num { background: rgba(255,255,255,0.2); }
+        .nav-item.completed .step-num { background: var(--success); }
 
-        .nav-item.completed .step-num {
-            background: var(--success);
-        }
+        .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 1rem; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--purple)); transition: width 0.5s; }
 
-        .progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            margin-top: 1rem;
-            overflow: hidden;
-        }
+        .content { flex: 1; padding: 2rem; max-width: 1100px; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s ease; }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--purple));
-            transition: width 0.5s;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Content Area */
-        .content {
-            flex: 1;
-            padding: 2rem;
-            max-width: 900px;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-header {
-            margin-bottom: 2rem;
-        }
-
-        .section-header h2 {
-            font-size: 1.75rem;
-            color: #f8fafc;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-header p {
-            color: #94a3b8;
-            font-size: 1rem;
-        }
+        .section-header { margin-bottom: 2rem; }
+        .section-header h2 { font-size: 1.75rem; color: #f8fafc; margin-bottom: 0.5rem; }
+        .section-header p { color: #94a3b8; font-size: 1rem; }
 
         .tip-box {
             background: rgba(37, 99, 235, 0.15);
@@ -208,35 +128,12 @@
             padding: 1rem 1.25rem;
             margin-bottom: 1.5rem;
         }
+        .tip-box h4 { color: #60a5fa; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .tip-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.5; }
 
-        .tip-box h4 {
-            color: #60a5fa;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .tip-box p {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            color: #e2e8f0;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group .hint {
-            color: #64748b;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: #e2e8f0; font-weight: 500; margin-bottom: 0.5rem; }
+        .form-group .hint { color: #64748b; font-size: 0.8rem; margin-top: 0.25rem; }
 
         input, textarea, select {
             width: 100%;
@@ -255,10 +152,7 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
         }
 
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
+        textarea { min-height: 120px; resize: vertical; }
 
         .card {
             background: rgba(255,255,255,0.05);
@@ -268,258 +162,154 @@
             margin-bottom: 1.5rem;
         }
 
-        .card h3 {
-            color: #f8fafc;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+        .card h3 { color: #f8fafc; font-size: 1.1rem; margin-bottom: 1rem; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+
+        /* Valuation Cards */
+        .valuation-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(37, 99, 235, 0.15));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+        .valuation-card h4 { color: #a78bfa; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .valuation-card .value { font-size: 2.5rem; font-weight: 700; color: #f8fafc; }
+        .valuation-card .range { color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem; }
+
+        /* KPI Cards */
+        .kpi-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
+        .kpi-card .label { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .kpi-card .value { font-size: 1.75rem; font-weight: 700; color: #f8fafc; margin: 0.5rem 0; }
+        .kpi-card .target { color: #64748b; font-size: 0.8rem; }
+        .kpi-card.on-track { border-left: 4px solid var(--success); }
+        .kpi-card.behind { border-left: 4px solid var(--danger); }
+        .kpi-card.ahead { border-left: 4px solid var(--cyan); }
 
-        /* SWOT Grid */
-        .swot-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .swot-box {
+        /* Goal Progress */
+        .goal-item {
             background: rgba(255,255,255,0.03);
             border-radius: 0.75rem;
             padding: 1rem;
-        }
-
-        .swot-box.strength { border-left: 4px solid var(--success); }
-        .swot-box.weakness { border-left: 4px solid var(--danger); }
-        .swot-box.opportunity { border-left: 4px solid var(--primary); }
-        .swot-box.threat { border-left: 4px solid var(--warning); }
-
-        .swot-box h4 {
-            font-size: 0.9rem;
             margin-bottom: 0.75rem;
         }
 
-        .swot-box.strength h4 { color: var(--success); }
-        .swot-box.weakness h4 { color: var(--danger); }
-        .swot-box.opportunity h4 { color: var(--primary); }
-        .swot-box.threat h4 { color: var(--warning); }
+        .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .goal-title { font-weight: 600; color: #f8fafc; }
+        .goal-status { font-size: 0.8rem; padding: 0.25rem 0.75rem; border-radius: 1rem; }
+        .goal-status.achieved { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .goal-status.in-progress { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .goal-status.not-started { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
-        /* Persona Card */
-        .persona-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(37, 99, 235, 0.1));
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
+        .goal-progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; }
+        .goal-progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .goal-progress-fill.green { background: var(--success); }
+        .goal-progress-fill.yellow { background: var(--warning); }
+        .goal-progress-fill.red { background: var(--danger); }
+        .goal-progress-fill.blue { background: var(--primary); }
 
-        .persona-header {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
+        .goal-details { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.8rem; }
 
-        .persona-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
+        /* Year Projection Table */
+        .projection-table { width: 100%; border-collapse: collapse; }
+        .projection-table th, .projection-table td { padding: 1rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .projection-table th { color: #94a3b8; font-weight: 500; font-size: 0.85rem; background: rgba(255,255,255,0.03); }
+        .projection-table td { color: #e2e8f0; }
+        .projection-table input { text-align: center; background: transparent; border: 1px solid transparent; }
+        .projection-table input:hover { border-color: rgba(255,255,255,0.2); }
+        .projection-table .actual { background: rgba(16, 185, 129, 0.1); }
+        .projection-table .target { background: rgba(37, 99, 235, 0.1); }
 
-        /* Team Member */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .team-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .team-card input {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Financial Tables */
-        .fin-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .fin-table th, .fin-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .fin-table th {
-            color: #94a3b8;
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
-
-        .fin-table input {
-            background: transparent;
-            border: 1px solid transparent;
-            padding: 0.5rem;
-        }
-
-        .fin-table input:hover {
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        /* Charts in wizard */
-        .chart-mini {
-            height: 200px;
-            margin-top: 1rem;
-        }
-
-        /* Navigation buttons */
-        .section-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Modern 2025 badges */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .badge-ai { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
-        .badge-esg { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-        .badge-lean { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-
-        /* Lean Canvas */
-        .lean-canvas {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(2, 1fr) auto;
-            gap: 0.5rem;
-        }
-
-        .lean-box {
+        /* Clinic Cards */
+        .clinic-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            min-height: 120px;
+            border-radius: 0.75rem;
+            padding: 1rem;
         }
+        .clinic-card.active { border-color: var(--success); background: rgba(16, 185, 129, 0.05); }
+        .clinic-card h5 { color: #f8fafc; margin-bottom: 0.5rem; }
+        .clinic-card p { color: #94a3b8; font-size: 0.85rem; }
 
-        .lean-box h5 {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #64748b;
-            margin-bottom: 0.5rem;
-        }
+        /* DCF Table */
+        .dcf-row { display: grid; grid-template-columns: 150px repeat(5, 1fr) 120px; gap: 0.5rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .dcf-row.header { color: #94a3b8; font-weight: 600; font-size: 0.85rem; }
+        .dcf-row .label { color: #94a3b8; }
+        .dcf-row input { text-align: right; }
 
-        .lean-box textarea {
-            min-height: 80px;
-            font-size: 0.85rem;
-        }
+        .section-nav { display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
 
-        /* Success Checklist */
-        .checklist-item {
+        /* Achievement Badge */
+        .achievement-score {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 12px solid var(--primary);
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(255,255,255,0.03);
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .checklist-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-        }
-
-        .checklist-item.checked {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 3px solid var(--success);
-        }
-
-        /* Export modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin: 2rem auto;
+            transition: border-color 0.5s;
         }
+        .achievement-score .score { font-size: 3.5rem; font-weight: 700; color: #f8fafc; }
+        .achievement-score .label { color: #94a3b8; font-size: 0.9rem; }
 
-        .modal-overlay.active { display: flex; }
-
-        .modal {
-            background: #1e293b;
-            border-radius: 1rem;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal h2 {
-            color: #f8fafc;
-            margin-bottom: 1rem;
-        }
+        .chart-container { position: relative; height: 300px; }
 
         @media (max-width: 768px) {
             .main-container { flex-direction: column; }
             .sidebar { width: 100%; height: auto; position: relative; }
-            .grid-2, .grid-4, .swot-grid { grid-template-columns: 1fr; }
-            .lean-canvas { grid-template-columns: 1fr; }
+            .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>a2v2.ai Business Plan 2026</h1>
+        <h1>a2v2.ai Goal Tracker & Business Plan</h1>
         <div class="header-actions">
             <button class="btn btn-outline" onclick="savePlan()">Save Progress</button>
-            <button class="btn btn-success" onclick="showExportModal()">Export Plan</button>
+            <button class="btn btn-success" onclick="exportData()">Export Data</button>
         </div>
     </div>
 
     <div class="main-container">
-        <!-- Sidebar Navigation -->
         <div class="sidebar">
             <div class="nav-section">
-                <div class="nav-section-title">Planning Steps</div>
-                <div class="nav-item active" onclick="showSection('executive')" data-section="executive">
+                <div class="nav-section-title">Goal Tracking</div>
+                <div class="nav-item active" onclick="showSection('goals')" data-section="goals">
+                    <span class="step-num">&#x1F3AF;</span>
+                    <span>Goals Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showSection('valuation')" data-section="valuation">
+                    <span class="step-num">&#x1F4B0;</span>
+                    <span>Valuation Tracker</span>
+                </div>
+                <div class="nav-item" onclick="showSection('projections')" data-section="projections">
+                    <span class="step-num">&#x1F4C8;</span>
+                    <span>5-Year Projections</span>
+                </div>
+                <div class="nav-item" onclick="showSection('clinics')" data-section="clinics">
+                    <span class="step-num">&#x1F3E5;</span>
+                    <span>Clinic Tracker</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Business Plan</div>
+                <div class="nav-item" onclick="showSection('executive')" data-section="executive">
                     <span class="step-num">1</span>
                     <span>Executive Summary</span>
                 </div>
@@ -527,737 +317,851 @@
                     <span class="step-num">2</span>
                     <span>Market Analysis</span>
                 </div>
-                <div class="nav-item" onclick="showSection('product')" data-section="product">
-                    <span class="step-num">3</span>
-                    <span>Product/Service</span>
-                </div>
-                <div class="nav-item" onclick="showSection('operations')" data-section="operations">
-                    <span class="step-num">4</span>
-                    <span>Operations & Team</span>
-                </div>
-                <div class="nav-item" onclick="showSection('marketing')" data-section="marketing">
-                    <span class="step-num">5</span>
-                    <span>Marketing & Sales</span>
-                </div>
                 <div class="nav-item" onclick="showSection('financial')" data-section="financial">
-                    <span class="step-num">6</span>
-                    <span>Financial Projections</span>
+                    <span class="step-num">3</span>
+                    <span>Financial Plan</span>
                 </div>
             </div>
 
             <div class="nav-section">
-                <div class="nav-section-title">2025 Modern Elements</div>
-                <div class="nav-item" onclick="showSection('modern')" data-section="modern">
-                    <span class="step-num">7</span>
-                    <span>ESG, AI & Lean</span>
-                </div>
-                <div class="nav-item" onclick="showSection('checklist')" data-section="checklist">
-                    <span class="step-num">8</span>
-                    <span>Success Checklist</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-section-title">Dashboards</div>
-                <div class="nav-item" onclick="showSection('dashboard')" data-section="dashboard">
-                    <span class="step-num">&#x1F4CA;</span>
-                    <span>Financial Dashboard</span>
+                <div class="nav-section-title">Current Performance</div>
+                <div style="background: rgba(16,185,129,0.1); border-radius: 0.5rem; padding: 1rem; margin-top: 0.5rem;">
+                    <div style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase;">Current MRR</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);" id="sidebarMRR">$1,500</div>
+                    <div style="color: #64748b; font-size: 0.75rem;">Target: $50,000</div>
+                    <div class="progress-bar" style="margin-top: 0.5rem;">
+                        <div class="progress-fill" id="mrrProgress" style="width: 3%;"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 12%"></div>
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
             </div>
             <p style="text-align: center; margin-top: 0.5rem; color: #64748b; font-size: 0.8rem;">
-                <span id="progressText">1 of 8</span> sections complete
+                <span id="goalProgress">0%</span> to $10M exit
             </p>
         </div>
 
-        <!-- Content Area -->
         <div class="content">
-            <!-- Section 1: Executive Summary -->
-            <div class="section active" id="section-executive">
+            <!-- Goals Dashboard -->
+            <div class="section active" id="section-goals">
                 <div class="section-header">
-                    <h2>1. Executive Summary</h2>
-                    <p>Your elevator pitch - the first thing investors read, but write it last after completing other sections.</p>
+                    <h2>Goals Dashboard</h2>
+                    <p>Track your progress toward the $10M valuation exit target.</p>
                 </div>
 
-                <div class="tip-box">
-                    <h4>Pro Tip</h4>
-                    <p>Keep this concise - under 2 pages. Focus on the problem, solution, and ask. This should make someone want to read more.</p>
-                </div>
-
-                <div class="card">
-                    <h3>The Mission: What Problem Are You Solving?</h3>
-                    <div class="form-group">
-                        <label>Problem Statement</label>
-                        <textarea id="problemStatement" placeholder="Describe the pain point your customers face...">Healthcare guidance is expensive, inaccessible, and not personalized. Patients wait weeks for appointments, pay high costs, and receive generic advice that doesn't account for their unique health profile.</textarea>
-                        <div class="hint">Be specific about who has this problem and why it matters</div>
+                <!-- Current State KPIs -->
+                <div class="grid-4" style="margin-bottom: 1.5rem;">
+                    <div class="kpi-card on-track">
+                        <div class="label">Current MRR</div>
+                        <div class="value" id="currentMRR">$1,500</div>
+                        <div class="target">Target: $50,000</div>
+                    </div>
+                    <div class="kpi-card on-track">
+                        <div class="label">Current ARR</div>
+                        <div class="value" id="currentARR">$18,000</div>
+                        <div class="target">Target: $600,000</div>
+                    </div>
+                    <div class="kpi-card on-track">
+                        <div class="label">Active Clinics</div>
+                        <div class="value" id="activeClinics">3</div>
+                        <div class="target">Target: 50+</div>
+                    </div>
+                    <div class="kpi-card on-track">
+                        <div class="label">Est. Valuation</div>
+                        <div class="value" id="currentValuation">$900K</div>
+                        <div class="target">Target: $10M</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3>The Solution: How Does Your Product Solve It?</h3>
-                    <div class="form-group">
-                        <label>Your Solution</label>
-                        <textarea id="solution" placeholder="Explain your product/service solution...">a2v2.ai provides instant, AI-powered personalized health guidance 24/7. Our platform analyzes individual health data to deliver tailored recommendations, from basic wellness tips to concierge-level medical guidance, at a fraction of traditional healthcare costs.</textarea>
+                <!-- Goal Achievement Score -->
+                <div class="card" style="text-align: center;">
+                    <h3>Overall Goal Achievement</h3>
+                    <div class="achievement-score" id="achievementCircle">
+                        <div class="score" id="achievementScore">9%</div>
+                        <div class="label">Complete</div>
                     </div>
-                    <div class="form-group">
-                        <label>Unique Value Proposition (1-2 sentences)</label>
-                        <input type="text" id="uvp" placeholder="What makes you different?" value="AI-powered health guidance that's 10x faster and 90% cheaper than traditional healthcare consultations, available anytime from any device.">
-                    </div>
+                    <p style="color: #94a3b8;">Based on valuation progress toward $10M exit</p>
                 </div>
 
+                <!-- Key Milestones -->
                 <div class="card">
-                    <h3>The Ask: Funding Requirements</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Funding Amount Sought</label>
-                            <input type="text" id="fundingAmount" value="$500,000">
+                    <h3>Key Milestones to $10M</h3>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">Year 1: Reach $150K ARR</span>
+                            <span class="goal-status in-progress">In Progress</span>
                         </div>
-                        <div class="form-group">
-                            <label>Target Valuation</label>
-                            <input type="text" id="targetValuation" value="$10,000,000">
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill yellow" style="width: 12%"></div>
+                        </div>
+                        <div class="goal-details">
+                            <span>Current: $18K ARR</span>
+                            <span>12% Complete</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Use of Funds</label>
-                        <textarea id="useOfFunds" placeholder="How will you use the investment?">- Product Development: $150,000 (30%) - Enhanced AI models, mobile apps
-- Marketing & Sales: $200,000 (40%) - Customer acquisition, brand building
-- Operations: $100,000 (20%) - Team hiring, infrastructure
-- Reserve: $50,000 (10%) - Working capital buffer</textarea>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">Year 2: Reach $300K ARR</span>
+                            <span class="goal-status not-started">Not Started</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill red" style="width: 6%"></div>
+                        </div>
+                        <div class="goal-details">
+                            <span>Current: $18K ARR</span>
+                            <span>6% Complete</span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Key Milestones This Funding Will Achieve</label>
-                        <textarea id="milestones" placeholder="What will you accomplish with this funding?">1. Reach $208K MRR ($2.5M ARR) within 18 months
-2. Acquire 7,000+ paying subscribers
-3. Achieve profitability by Q2 2026
-4. Position for $10M exit or Series A by Q3 2026</textarea>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">Year 3: Reach $600K ARR ($50K MRR)</span>
+                            <span class="goal-status not-started">Target Year</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill red" style="width: 3%"></div>
+                        </div>
+                        <div class="goal-details">
+                            <span>Current: $18K ARR</span>
+                            <span>3% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">Achieve $10M Valuation (Exit Ready)</span>
+                            <span class="goal-status not-started">Final Goal</span>
+                        </div>
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill blue" style="width: 9%"></div>
+                        </div>
+                        <div class="goal-details">
+                            <span>Current: ~$900K</span>
+                            <span>9% Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Targets -->
+                <div class="card">
+                    <h3>Monthly Revenue Targets (Year 1)</h3>
+                    <div class="grid-4">
+                        <div class="kpi-card on-track">
+                            <div class="label">Month 1-3</div>
+                            <div class="value">$1,500</div>
+                            <div class="target" style="color: var(--success);">&#10003; Current</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Month 4-6</div>
+                            <div class="value">$3,000</div>
+                            <div class="target">+100% growth</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Month 7-9</div>
+                            <div class="value">$6,000</div>
+                            <div class="target">+100% growth</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Month 10-12</div>
+                            <div class="value">$12,500</div>
+                            <div class="target">=$150K ARR</div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="section-nav">
                     <div></div>
-                    <button class="btn btn-primary" onclick="nextSection('market')">Next: Market Analysis →</button>
+                    <button class="btn btn-primary" onclick="showSection('valuation')">Valuation Details →</button>
                 </div>
             </div>
 
-            <!-- Section 2: Market Analysis -->
-            <div class="section" id="section-market">
+            <!-- Valuation Tracker -->
+            <div class="section" id="section-valuation">
                 <div class="section-header">
-                    <h2>2. Market Analysis & Strategy</h2>
-                    <p>Prove there's a gap in the market you're uniquely qualified to fill.</p>
-                </div>
-
-                <div class="card">
-                    <h3>Target Market Size</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>TAM (Total Addressable Market)</label>
-                            <input type="text" id="tam" value="$660B - Global Digital Health Market by 2026">
-                            <div class="hint">The entire market if you had 100% share</div>
-                        </div>
-                        <div class="form-group">
-                            <label>SAM (Serviceable Addressable Market)</label>
-                            <input type="text" id="sam" value="$45B - AI in Healthcare Market by 2026">
-                            <div class="hint">The portion you can realistically target</div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>SOM (Serviceable Obtainable Market)</label>
-                        <input type="text" id="som" value="$500M - US AI Health Guidance / Telehealth AI segment">
-                        <div class="hint">The portion you can realistically capture in 3-5 years</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Customer Personas</h3>
-                    <p style="color: #94a3b8; margin-bottom: 1rem;">Define your ideal customers - demographics, pain points, behaviors</p>
-
-                    <div class="persona-card">
-                        <div class="persona-header">
-                            <div class="persona-avatar">👩‍💼</div>
-                            <div>
-                                <input type="text" id="persona1Name" value="Health-Conscious Professional" style="font-weight: 600; font-size: 1.1rem; background: transparent; border: none; padding: 0;">
-                                <input type="text" id="persona1Demo" value="Ages 28-45, Urban, $75K+ income" style="font-size: 0.9rem; color: #94a3b8; background: transparent; border: none; padding: 0; margin-top: 0.25rem;">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Pain Points</label>
-                                <textarea id="persona1Pain" style="min-height: 80px;">- No time for doctor appointments
-- Wants quick answers to health questions
-- Concerned about wellness optimization</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Behaviors</label>
-                                <textarea id="persona1Behavior" style="min-height: 80px;">- Uses health apps and wearables
-- Researches symptoms online
-- Willing to pay for convenience</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="persona-card">
-                        <div class="persona-header">
-                            <div class="persona-avatar">🏥</div>
-                            <div>
-                                <input type="text" id="persona2Name" value="Healthcare Organization" style="font-weight: 600; font-size: 1.1rem; background: transparent; border: none; padding: 0;">
-                                <input type="text" id="persona2Demo" value="Clinics, Practices, 10-500 employees" style="font-size: 0.9rem; color: #94a3b8; background: transparent; border: none; padding: 0; margin-top: 0.25rem;">
-                            </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label>Pain Points</label>
-                                <textarea id="persona2Pain" style="min-height: 80px;">- Overwhelmed staff, long wait times
-- Need to reduce costs
-- Want to improve patient engagement</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Behaviors</label>
-                                <textarea id="persona2Behavior" style="min-height: 80px;">- Evaluating digital transformation
-- Budget for tech solutions
-- Need proven ROI</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Competitive Landscape</h3>
-                    <div class="form-group">
-                        <label>Key Competitors</label>
-                        <textarea id="competitors" placeholder="List main competitors and their positioning...">1. Teladoc Health - Large telehealth platform, but human-only, expensive
-2. K Health - AI symptom checker, but limited guidance depth
-3. Ada Health - AI diagnosis, but no ongoing relationship
-4. Traditional Healthcare - Expensive, slow, inaccessible</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Your Competitive Advantage</label>
-                        <textarea id="competitiveAdvantage" placeholder="Why will customers choose you?">1. AI-First: Purpose-built AI, not bolted-on technology
-2. Tiered Pricing: From $4.99 to $499 - accessible to all
-3. 90% Gross Margins: Highly scalable SaaS model
-4. Personalization: Learns from each interaction
-5. 24/7 Availability: Instant access, no appointments</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>SWOT Analysis</h3>
-                    <div class="swot-grid">
-                        <div class="swot-box strength">
-                            <h4>Strengths</h4>
-                            <textarea id="swotStrengths">- Proprietary AI technology
-- 90% gross margins
-- Experienced team
-- First-mover in niche
-- Strong unit economics (12:1 LTV:CAC)</textarea>
-                        </div>
-                        <div class="swot-box weakness">
-                            <h4>Weaknesses</h4>
-                            <textarea id="swotWeaknesses">- Limited brand recognition
-- Small team currently
-- Dependency on AI accuracy
-- Healthcare regulatory complexity</textarea>
-                        </div>
-                        <div class="swot-box opportunity">
-                            <h4>Opportunities</h4>
-                            <textarea id="swotOpportunities">- $45B AI healthcare market growing 45% CAGR
-- Post-COVID telehealth acceptance
-- Employer wellness programs expanding
-- International expansion potential</textarea>
-                        </div>
-                        <div class="swot-box threat">
-                            <h4>Threats</h4>
-                            <textarea id="swotThreats">- Big tech entering healthcare
-- Regulatory changes (FDA, HIPAA)
-- Economic downturn reducing spending
-- AI accuracy concerns/liability</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('executive')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('product')">Next: Product/Service →</button>
-                </div>
-            </div>
-
-            <!-- Section 3: Product/Service -->
-            <div class="section" id="section-product">
-                <div class="section-header">
-                    <h2>3. Product or Service Line</h2>
-                    <p>Describe what you're selling - focus on benefits, not just features.</p>
-                </div>
-
-                <div class="card">
-                    <h3>Product Lines & Pricing</h3>
-                    <table class="fin-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>COGS</th>
-                                <th>Margin</th>
-                                <th>Margin %</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Pay For Access</td>
-                                <td><input type="text" value="$4.99" id="prod1Price"></td>
-                                <td><input type="text" value="$3.99" id="prod1Cogs"></td>
-                                <td>$1.00</td>
-                                <td><span style="color: var(--warning)">20%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Subscription Module</td>
-                                <td><input type="text" value="$19.99" id="prod2Price"></td>
-                                <td><input type="text" value="$2.00" id="prod2Cogs"></td>
-                                <td>$17.99</td>
-                                <td><span style="color: var(--success)">90%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Concierge Medicine</td>
-                                <td><input type="text" value="$39.99" id="prod3Price"></td>
-                                <td><input type="text" value="$4.00" id="prod3Cogs"></td>
-                                <td>$35.99</td>
-                                <td><span style="color: var(--success)">90%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Enterprise Subscription</td>
-                                <td><input type="text" value="$499.00" id="prod4Price"></td>
-                                <td><input type="text" value="$49.90" id="prod4Cogs"></td>
-                                <td>$449.10</td>
-                                <td><span style="color: var(--success)">90%</span></td>
-                            </tr>
-                            <tr>
-                                <td>Engineering Services</td>
-                                <td><input type="text" value="$25.00/hr" id="prod5Price"></td>
-                                <td><input type="text" value="$0.00" id="prod5Cogs"></td>
-                                <td>$25.00</td>
-                                <td><span style="color: var(--success)">100%</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <h3>Value Proposition</h3>
-                    <div class="form-group">
-                        <label>What Makes Your Offering "Sticky"?</label>
-                        <textarea id="valueProposition">1. Personalization: AI learns user's health profile over time
-2. Convenience: 24/7 access from any device
-3. Cost Savings: 90% cheaper than traditional consultations
-4. Data Insights: Users see their health trends and improvements
-5. Integration: Connects with wearables, EHRs, and health apps</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Product Lifecycle & Roadmap</h3>
-                    <div class="form-group">
-                        <label>Current Stage</label>
-                        <select id="productStage">
-                            <option value="idea">Idea/Concept</option>
-                            <option value="mvp">MVP/Beta</option>
-                            <option value="launched" selected>Launched - Early Traction</option>
-                            <option value="growth">Growth Stage</option>
-                            <option value="mature">Mature Product</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Product Roadmap (Next 18 Months)</label>
-                        <textarea id="productRoadmap">Q1 2025: Mobile app launch (iOS/Android)
-Q2 2025: Wearable integrations (Apple Watch, Fitbit)
-Q3 2025: Enterprise dashboard and admin tools
-Q4 2025: Multi-language support (Spanish, Mandarin)
-Q1 2026: Advanced AI diagnostics (with physician oversight)
-Q2 2026: Insurance integration pilot</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Intellectual Property</h3>
-                    <div class="form-group">
-                        <label>Patents, Trademarks, or Proprietary Technology</label>
-                        <textarea id="intellectualProperty">- Trademark: "a2v2.ai" brand and logo (pending)
-- Proprietary AI Models: Custom-trained health guidance models
-- Trade Secrets: Training data methodology, prompt engineering
-- Data Moat: Anonymized user interaction data improves AI over time</textarea>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('market')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('operations')">Next: Operations & Team →</button>
-                </div>
-            </div>
-
-            <!-- Section 4: Operations & Team -->
-            <div class="section" id="section-operations">
-                <div class="section-header">
-                    <h2>4. Operational & Management Plan</h2>
-                    <p>The "who" and the "how" of your business - investors in 2025 look for "founder-market fit".</p>
-                </div>
-
-                <div class="card">
-                    <h3>Leadership Team</h3>
-                    <div class="tip-box">
-                        <h4>Founder-Market Fit</h4>
-                        <p>In 2025, investors want to see why YOUR team is uniquely positioned to solve this problem. Highlight relevant experience.</p>
-                    </div>
-                    <div class="team-grid">
-                        <div class="team-card">
-                            <div class="persona-avatar" style="margin: 0 auto 1rem;">👤</div>
-                            <input type="text" id="team1Name" value="CEO / Founder" style="font-weight: 600;">
-                            <input type="text" id="team1Role" value="Strategy & Vision">
-                            <textarea id="team1Bio" style="min-height: 60px; font-size: 0.85rem;">10+ years healthcare tech, Ex-Google Health, Stanford MBA</textarea>
-                        </div>
-                        <div class="team-card">
-                            <div class="persona-avatar" style="margin: 0 auto 1rem;">👤</div>
-                            <input type="text" id="team2Name" value="CTO">
-                            <input type="text" id="team2Role" value="Technology & AI">
-                            <textarea id="team2Bio" style="min-height: 60px; font-size: 0.85rem;">ML/AI expert, Ex-OpenAI, PhD Computer Science</textarea>
-                        </div>
-                        <div class="team-card">
-                            <div class="persona-avatar" style="margin: 0 auto 1rem;">👤</div>
-                            <input type="text" id="team3Name" value="CMO">
-                            <input type="text" id="team3Role" value="Marketing & Growth">
-                            <textarea id="team3Bio" style="min-height: 60px; font-size: 0.85rem;">Growth marketing expert, scaled 2 startups to exit</textarea>
-                        </div>
-                        <div class="team-card">
-                            <div class="persona-avatar" style="margin: 0 auto 1rem;">👤</div>
-                            <input type="text" id="team4Name" value="Medical Advisor">
-                            <input type="text" id="team4Role" value="Clinical Oversight">
-                            <textarea id="team4Bio" style="min-height: 60px; font-size: 0.85rem;">Board-certified physician, 20+ years practice</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Company Structure</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Legal Structure</label>
-                            <select id="legalStructure">
-                                <option value="llc">LLC</option>
-                                <option value="ccorp" selected>C-Corporation (Delaware)</option>
-                                <option value="scorp">S-Corporation</option>
-                                <option value="benefit">Benefit Corporation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Work Model</label>
-                            <select id="workModel">
-                                <option value="remote" selected>Fully Remote</option>
-                                <option value="hybrid">Hybrid</option>
-                                <option value="office">In-Office</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Current Team Size</label>
-                        <input type="text" id="teamSize" value="5 full-time, 3 contractors">
-                    </div>
-                    <div class="form-group">
-                        <label>Hiring Plan (Next 12 Months)</label>
-                        <textarea id="hiringPlan">Q1: 2 Senior Engineers, 1 Product Manager
-Q2: 2 Sales Representatives, 1 Customer Success
-Q3: 1 Data Scientist, 1 Marketing Manager
-Q4: 1 Finance/Operations, 1 Enterprise Sales Lead
-
-Target: 15-18 FTEs by end of 2025</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Operations</h3>
-                    <div class="form-group">
-                        <label>Technology Stack</label>
-                        <textarea id="techStack">- Cloud: AWS (HIPAA compliant)
-- AI/ML: Custom models on PyTorch, OpenAI APIs
-- Backend: Python, Node.js
-- Frontend: React, React Native
-- Database: PostgreSQL, Redis
-- Analytics: Mixpanel, Amplitude</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Key Operational Processes</label>
-                        <textarea id="operations">1. Customer Onboarding: Self-serve signup with guided tutorial
-2. Support: AI-first support with human escalation
-3. Billing: Stripe subscription management
-4. Compliance: Monthly HIPAA audits, SOC 2 certification in progress
-5. Development: 2-week sprints, continuous deployment</textarea>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('product')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('marketing')">Next: Marketing & Sales →</button>
-                </div>
-            </div>
-
-            <!-- Section 5: Marketing & Sales -->
-            <div class="section" id="section-marketing">
-                <div class="section-header">
-                    <h2>5. Marketing & Sales Strategy</h2>
-                    <p>How will you get—and keep—customers?</p>
-                </div>
-
-                <div class="card">
-                    <h3>Customer Acquisition Channels</h3>
-                    <table class="fin-table">
-                        <thead>
-                            <tr>
-                                <th>Channel</th>
-                                <th>Strategy</th>
-                                <th>Budget/Month</th>
-                                <th>Target CAC</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Content Marketing</td>
-                                <td><input type="text" value="SEO blog, health guides, YouTube"></td>
-                                <td><input type="text" value="$3,000"></td>
-                                <td><input type="text" value="$20"></td>
-                            </tr>
-                            <tr>
-                                <td>Paid Ads</td>
-                                <td><input type="text" value="Google, Facebook, Instagram"></td>
-                                <td><input type="text" value="$10,000"></td>
-                                <td><input type="text" value="$50"></td>
-                            </tr>
-                            <tr>
-                                <td>Partnerships</td>
-                                <td><input type="text" value="Health insurers, employers"></td>
-                                <td><input type="text" value="$5,000"></td>
-                                <td><input type="text" value="$30"></td>
-                            </tr>
-                            <tr>
-                                <td>Referral Program</td>
-                                <td><input type="text" value="1 month free for both parties"></td>
-                                <td><input type="text" value="$2,000"></td>
-                                <td><input type="text" value="$15"></td>
-                            </tr>
-                            <tr>
-                                <td>Enterprise Sales</td>
-                                <td><input type="text" value="Direct outreach, conferences"></td>
-                                <td><input type="text" value="$15,000"></td>
-                                <td><input type="text" value="$500"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <h3>Pricing Strategy</h3>
-                    <div class="form-group">
-                        <label>Pricing Positioning</label>
-                        <select id="pricingStrategy">
-                            <option value="budget">Budget/Low-Cost</option>
-                            <option value="value" selected>Value-Based (Quality at fair price)</option>
-                            <option value="premium">Premium/Luxury</option>
-                            <option value="freemium">Freemium Model</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Pricing Rationale</label>
-                        <textarea id="pricingRationale">Our tiered pricing strategy serves multiple customer segments:
-- $4.99 Pay-Per-Use: Entry point, converts to subscriptions
-- $19.99/month Basic: 90% cheaper than average doctor visit ($200)
-- $39.99/month Concierge: Premium features, still 80% savings
-- $499/month Enterprise: Priced per-employee, ROI positive from day 1
-
-All tiers maintain 90%+ gross margins enabling sustainable growth.</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Customer Retention Strategy</h3>
-                    <div class="form-group">
-                        <label>How do you turn a one-time buyer into a loyal advocate?</label>
-                        <textarea id="retentionStrategy">1. Personalization: AI remembers preferences and health history
-2. Engagement: Weekly health insights and recommendations
-3. Gamification: Health scores, streaks, achievements
-4. Community: Private health community forums
-5. Education: Regular webinars and content
-6. Loyalty: Annual subscription discounts (20% off)
-7. Win-back: Targeted campaigns for churned users
-
-Target Metrics:
-- Monthly churn: <5% (consumer), <2% (enterprise)
-- Net Revenue Retention: >110%
-- NPS: >50</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Sales Process</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Consumer Sales (Self-Serve)</label>
-                            <textarea style="min-height: 100px;">1. Awareness: Content, ads, referrals
-2. Interest: Free trial or pay-per-use
-3. Decision: Upgrade prompts in-app
-4. Action: Self-serve checkout
-5. Retention: Automated engagement</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Enterprise Sales (High-Touch)</label>
-                            <textarea style="min-height: 100px;">1. Lead Gen: Outbound + inbound
-2. Discovery: 30-min needs call
-3. Demo: Custom product demo
-4. Proposal: ROI-focused proposal
-5. Close: 30-60 day cycle
-6. Onboard: Dedicated success manager</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('operations')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('financial')">Next: Financial Projections →</button>
-                </div>
-            </div>
-
-            <!-- Section 6: Financial Projections -->
-            <div class="section" id="section-financial">
-                <div class="section-header">
-                    <h2>6. Financial Projections</h2>
-                    <p>Numbers are the "truth" of your business plan. Provide a 3-5 year forecast.</p>
+                    <h2>Valuation Tracker</h2>
+                    <p>Track your company valuation using Revenue Multiples and DCF methods.</p>
                 </div>
 
                 <div class="tip-box">
-                    <h4>Key Metrics for $10M Exit</h4>
-                    <p>At 4x ARR multiple: Target $2.5M ARR ($208K MRR) with 90%+ gross margins and strong growth trajectory.</p>
+                    <h4>Valuation Target: $10M Exit</h4>
+                    <p>Based on 20-30x revenue multiples for AI/healthtech SaaS and DCF analysis with 25-30% discount rate. Current estimate: $800K - $1.5M.</p>
                 </div>
 
+                <!-- Valuation Summary -->
+                <div class="grid-2" style="margin-bottom: 1.5rem;">
+                    <div class="valuation-card">
+                        <h4>Revenue Multiples Method</h4>
+                        <div class="value" id="revenueMultipleVal">$1.1M</div>
+                        <div class="range">Range: $500K - $2M</div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: #94a3b8;">
+                            Using 20-30x on $75K revenue
+                        </div>
+                    </div>
+                    <div class="valuation-card">
+                        <h4>DCF Method</h4>
+                        <div class="value" id="dcfVal">$1.05M</div>
+                        <div class="range">Range: $900K - $1.2M</div>
+                        <div style="margin-top: 1rem; font-size: 0.85rem; color: #94a3b8;">
+                            25-30% discount rate, 5% perpetual growth
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Your Actuals -->
                 <div class="card">
-                    <h3>Income Statement Projections</h3>
-                    <table class="fin-table">
+                    <h3>Enter Your Current Metrics</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Annual Revenue Run Rate ($)</label>
+                            <input type="number" id="inputRevenue" value="75000" onchange="recalculateValuation()">
+                            <div class="hint">Include all revenue sources</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly Recurring Revenue ($)</label>
+                            <input type="number" id="inputMRR" value="1500" onchange="recalculateValuation()">
+                            <div class="hint">Subscription revenue only</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Annual Costs ($)</label>
+                            <input type="number" id="inputCosts" value="40000" onchange="recalculateValuation()">
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Number of Paying Clients</label>
+                            <input type="number" id="inputClients" value="3" onchange="recalculateValuation()">
+                        </div>
+                        <div class="form-group">
+                            <label>Revenue Multiple (x)</label>
+                            <input type="number" id="inputMultiple" value="25" step="1" onchange="recalculateValuation()">
+                            <div class="hint">20-30x for AI/healthtech</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Discount Rate (%)</label>
+                            <input type="number" id="inputDiscountRate" value="27.5" step="0.5" onchange="recalculateValuation()">
+                            <div class="hint">25-30% for startups</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Multiple Calculator -->
+                <div class="card">
+                    <h3>Revenue Multiples Valuation</h3>
+                    <table class="projection-table">
                         <thead>
                             <tr>
                                 <th>Metric</th>
-                                <th>2025 Q1</th>
-                                <th>2025 Q4</th>
-                                <th>2026 Q2</th>
-                                <th>2026 Q4</th>
+                                <th>Your Value</th>
+                                <th>@ 20x</th>
+                                <th>@ 25x</th>
+                                <th>@ 30x</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>MRR</td>
-                                <td><input type="text" value="$5,000"></td>
-                                <td><input type="text" value="$60,000"></td>
-                                <td><input type="text" value="$150,000"></td>
-                                <td><input type="text" value="$250,000"></td>
+                                <td>Annual Revenue ($75K)</td>
+                                <td id="rmRevenue">$75,000</td>
+                                <td id="rmRev20">$1,500,000</td>
+                                <td id="rmRev25">$1,875,000</td>
+                                <td id="rmRev30">$2,250,000</td>
                             </tr>
                             <tr>
-                                <td>ARR</td>
-                                <td><input type="text" value="$60,000"></td>
-                                <td><input type="text" value="$720,000"></td>
-                                <td><input type="text" value="$1,800,000"></td>
-                                <td><input type="text" value="$3,000,000"></td>
+                                <td>ARR Only ($18K)</td>
+                                <td id="rmARR">$18,000</td>
+                                <td id="rmARR20">$360,000</td>
+                                <td id="rmARR25">$450,000</td>
+                                <td id="rmARR30">$540,000</td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 1rem;">
+                        <strong>Comps:</strong> Teladoc (mature, 0.7x), Ro (~76x at $90M, high-growth), Hims & Hers (~8x, public).
+                        Your early-stage AI premium suggests 20-30x is reasonable.
+                    </p>
+                </div>
+
+                <!-- DCF Calculator -->
+                <div class="card">
+                    <h3>DCF Valuation (5-Year Projection)</h3>
+                    <p style="color: #94a3b8; margin-bottom: 1rem;">Projecting ~100% CAGR to $600K ARR in Year 3, then 30% growth Years 4-5.</p>
+
+                    <div class="dcf-row header">
+                        <div>Metric</div>
+                        <div>Year 1</div>
+                        <div>Year 2</div>
+                        <div>Year 3</div>
+                        <div>Year 4</div>
+                        <div>Year 5</div>
+                        <div>Terminal</div>
+                    </div>
+                    <div class="dcf-row">
+                        <div class="label">Revenue</div>
+                        <div>$150K</div>
+                        <div>$300K</div>
+                        <div>$600K</div>
+                        <div>$780K</div>
+                        <div>$1.01M</div>
+                        <div>-</div>
+                    </div>
+                    <div class="dcf-row">
+                        <div class="label">FCF (40% margin)</div>
+                        <div>$60K</div>
+                        <div>$120K</div>
+                        <div>$240K</div>
+                        <div>$312K</div>
+                        <div>$406K</div>
+                        <div>$426K</div>
+                    </div>
+                    <div class="dcf-row">
+                        <div class="label">PV @ 25%</div>
+                        <div>$48K</div>
+                        <div>$77K</div>
+                        <div>$123K</div>
+                        <div>$128K</div>
+                        <div>$133K</div>
+                        <div>$698K</div>
+                    </div>
+                    <div class="dcf-row">
+                        <div class="label">PV @ 30%</div>
+                        <div>$46K</div>
+                        <div>$71K</div>
+                        <div>$109K</div>
+                        <div>$109K</div>
+                        <div>$109K</div>
+                        <div>$460K</div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 0.5rem;">
+                        <div class="grid-2">
+                            <div>
+                                <div style="color: #94a3b8; font-size: 0.85rem;">Total DCF Value @ 25% Rate</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">$1,207,000</div>
+                            </div>
+                            <div>
+                                <div style="color: #94a3b8; font-size: 0.85rem;">Total DCF Value @ 30% Rate</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">$904,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Path to $10M -->
+                <div class="card">
+                    <h3>What's Needed for $10M Valuation?</h3>
+                    <div class="grid-2">
+                        <div style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 0.5rem;">
+                            <h4 style="color: var(--success); margin-bottom: 0.5rem;">Revenue Multiple Path</h4>
+                            <p style="color: #94a3b8; font-size: 0.9rem;">At 25x multiple, need:</p>
+                            <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc; margin: 0.5rem 0;">$400K ARR</div>
+                            <p style="color: #64748b; font-size: 0.85rem;">= $33K MRR = ~22x growth from current</p>
+                        </div>
+                        <div style="padding: 1rem; background: rgba(37, 99, 235, 0.1); border-radius: 0.5rem;">
+                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">DCF Path</h4>
+                            <p style="color: #94a3b8; font-size: 0.9rem;">Maintain 100%+ CAGR for 3 years, then:</p>
+                            <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc; margin: 0.5rem 0;">$2M+ ARR</div>
+                            <p style="color: #64748b; font-size: 0.85rem;">With 50%+ margins and continued 30% growth</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-outline" onclick="showSection('goals')">← Goals Dashboard</button>
+                    <button class="btn btn-primary" onclick="showSection('projections')">5-Year Projections →</button>
+                </div>
+            </div>
+
+            <!-- 5-Year Projections -->
+            <div class="section" id="section-projections">
+                <div class="section-header">
+                    <h2>5-Year Projections vs Actuals</h2>
+                    <p>Track your actual performance against the projected targets.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Growth Trajectory</h4>
+                    <p>Target: ~100% CAGR Years 1-3 to reach $600K ARR, then 30% CAGR Years 4-5 to reach $1M+ ARR.</p>
+                </div>
+
+                <!-- Projection Chart -->
+                <div class="card">
+                    <h3>Revenue Trajectory</h3>
+                    <div class="chart-container">
+                        <canvas id="projectionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Year by Year Table -->
+                <div class="card">
+                    <h3>Year-by-Year Targets & Actuals</h3>
+                    <table class="projection-table">
+                        <thead>
                             <tr>
-                                <td>Gross Revenue</td>
-                                <td><input type="text" value="$20,000"></td>
-                                <td><input type="text" value="$75,000"></td>
-                                <td><input type="text" value="$175,000"></td>
-                                <td><input type="text" value="$280,000"></td>
+                                <th>Metric</th>
+                                <th>Current</th>
+                                <th>Year 1</th>
+                                <th>Year 2</th>
+                                <th>Year 3</th>
+                                <th>Year 4</th>
+                                <th>Year 5</th>
                             </tr>
-                            <tr>
-                                <td>COGS</td>
-                                <td><input type="text" value="$2,000"></td>
-                                <td><input type="text" value="$7,500"></td>
-                                <td><input type="text" value="$17,500"></td>
-                                <td><input type="text" value="$28,000"></td>
+                        </thead>
+                        <tbody>
+                            <tr class="target">
+                                <td><strong>Target Revenue</strong></td>
+                                <td>$75K</td>
+                                <td>$150K</td>
+                                <td>$300K</td>
+                                <td>$600K</td>
+                                <td>$780K</td>
+                                <td>$1.01M</td>
                             </tr>
-                            <tr>
-                                <td>Gross Profit</td>
-                                <td><input type="text" value="$18,000"></td>
-                                <td><input type="text" value="$67,500"></td>
-                                <td><input type="text" value="$157,500"></td>
-                                <td><input type="text" value="$252,000"></td>
+                            <tr class="actual">
+                                <td><strong>Actual Revenue</strong></td>
+                                <td><input type="text" value="$75,000" id="actualY0"></td>
+                                <td><input type="text" value="-" id="actualY1"></td>
+                                <td><input type="text" value="-" id="actualY2"></td>
+                                <td><input type="text" value="-" id="actualY3"></td>
+                                <td><input type="text" value="-" id="actualY4"></td>
+                                <td><input type="text" value="-" id="actualY5"></td>
                             </tr>
-                            <tr>
-                                <td>Operating Expenses</td>
-                                <td><input type="text" value="$40,000"></td>
-                                <td><input type="text" value="$65,000"></td>
-                                <td><input type="text" value="$100,000"></td>
-                                <td><input type="text" value="$150,000"></td>
+                            <tr class="target">
+                                <td><strong>Target MRR</strong></td>
+                                <td>$1.5K</td>
+                                <td>$12.5K</td>
+                                <td>$25K</td>
+                                <td>$50K</td>
+                                <td>$65K</td>
+                                <td>$84K</td>
                             </tr>
-                            <tr style="font-weight: 600;">
-                                <td>Net Income</td>
-                                <td style="color: var(--danger);">-$22,000</td>
-                                <td style="color: var(--success);">$2,500</td>
-                                <td style="color: var(--success);">$57,500</td>
-                                <td style="color: var(--success);">$102,000</td>
+                            <tr class="actual">
+                                <td><strong>Actual MRR</strong></td>
+                                <td><input type="text" value="$1,500" id="actualMRR0"></td>
+                                <td><input type="text" value="-" id="actualMRR1"></td>
+                                <td><input type="text" value="-" id="actualMRR2"></td>
+                                <td><input type="text" value="-" id="actualMRR3"></td>
+                                <td><input type="text" value="-" id="actualMRR4"></td>
+                                <td><input type="text" value="-" id="actualMRR5"></td>
+                            </tr>
+                            <tr class="target">
+                                <td><strong>Target Clients</strong></td>
+                                <td>3</td>
+                                <td>10</td>
+                                <td>25</td>
+                                <td>50</td>
+                                <td>75</td>
+                                <td>100+</td>
+                            </tr>
+                            <tr class="actual">
+                                <td><strong>Actual Clients</strong></td>
+                                <td><input type="text" value="3" id="actualClients0"></td>
+                                <td><input type="text" value="-" id="actualClients1"></td>
+                                <td><input type="text" value="-" id="actualClients2"></td>
+                                <td><input type="text" value="-" id="actualClients3"></td>
+                                <td><input type="text" value="-" id="actualClients4"></td>
+                                <td><input type="text" value="-" id="actualClients5"></td>
+                            </tr>
+                            <tr class="target">
+                                <td><strong>Target FCF</strong></td>
+                                <td>$35K</td>
+                                <td>$60K</td>
+                                <td>$120K</td>
+                                <td>$240K</td>
+                                <td>$312K</td>
+                                <td>$406K</td>
+                            </tr>
+                            <tr class="target">
+                                <td><strong>Target Margin</strong></td>
+                                <td>47%</td>
+                                <td>40%</td>
+                                <td>40%</td>
+                                <td>40%</td>
+                                <td>40%</td>
+                                <td>40%</td>
+                            </tr>
+                            <tr class="target">
+                                <td><strong>Est. Valuation</strong></td>
+                                <td>$900K</td>
+                                <td>$2.3M</td>
+                                <td>$4.5M</td>
+                                <td>$9M</td>
+                                <td>$11.7M</td>
+                                <td>$15M+</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
+                <!-- Quarterly Breakdown Year 1 -->
                 <div class="card">
-                    <h3>Break-Even Analysis</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Monthly Fixed Costs</label>
-                            <input type="text" id="fixedCosts" value="$36,500">
-                        </div>
-                        <div class="form-group">
-                            <label>Average Gross Margin</label>
-                            <input type="text" id="avgMargin" value="90%">
-                        </div>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Break-Even MRR</label>
-                            <input type="text" id="breakEvenMrr" value="$40,556" readonly style="background: rgba(16,185,129,0.1); border-color: var(--success);">
-                        </div>
-                        <div class="form-group">
-                            <label>Target Break-Even Date</label>
-                            <input type="text" id="breakEvenDate" value="Q3 2025">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Cash Flow Summary</h3>
-                    <div class="form-group">
-                        <label>Starting Cash</label>
-                        <input type="text" id="startingCash" value="$100,000">
-                    </div>
-                    <div class="form-group">
-                        <label>Funding to be Raised</label>
-                        <input type="text" id="fundingToRaise" value="$500,000">
-                    </div>
-                    <div class="form-group">
-                        <label>Monthly Burn Rate (Current)</label>
-                        <input type="text" id="burnRate" value="$25,000">
-                    </div>
-                    <div class="form-group">
-                        <label>Runway (Months)</label>
-                        <input type="text" id="runway" value="24 months (post-funding)" readonly style="background: rgba(16,185,129,0.1); border-color: var(--success);">
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Key Unit Economics</h3>
+                    <h3>Year 1 Quarterly Targets</h3>
                     <div class="grid-4">
+                        <div class="kpi-card on-track">
+                            <div class="label">Q1 (Current)</div>
+                            <div class="value">$1.5K</div>
+                            <div class="target">MRR | 3 clinics</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Q2 Target</div>
+                            <div class="value">$4K</div>
+                            <div class="target">MRR | 5 clinics</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Q3 Target</div>
+                            <div class="value">$7.5K</div>
+                            <div class="target">MRR | 7 clinics</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Q4 Target</div>
+                            <div class="value">$12.5K</div>
+                            <div class="target">MRR | 10 clinics</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-outline" onclick="showSection('valuation')">← Valuation Tracker</button>
+                    <button class="btn btn-primary" onclick="showSection('clinics')">Clinic Tracker →</button>
+                </div>
+            </div>
+
+            <!-- Clinic Tracker -->
+            <div class="section" id="section-clinics">
+                <div class="section-header">
+                    <h2>Clinic Acquisition Tracker</h2>
+                    <p>Track telemedicine clinic onboarding and revenue per clinic.</p>
+                </div>
+
+                <div class="tip-box">
+                    <h4>Clinic Economics</h4>
+                    <p>Current: 3 clinics @ $500/mo avg = $1,500 MRR. Target: 50+ clinics @ $1,000/mo avg = $50K MRR by Year 3.</p>
+                </div>
+
+                <!-- Clinic KPIs -->
+                <div class="grid-4" style="margin-bottom: 1.5rem;">
+                    <div class="kpi-card on-track">
+                        <div class="label">Active Clinics</div>
+                        <div class="value" id="totalClinics">3</div>
+                        <div class="target">Target: 50</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Avg Revenue/Clinic</div>
+                        <div class="value">$500</div>
+                        <div class="target">Target: $1,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">Churn Rate</div>
+                        <div class="value">0%</div>
+                        <div class="target">Target: <5%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="label">LTV per Clinic</div>
+                        <div class="value">$12K</div>
+                        <div class="target">24-mo lifetime</div>
+                    </div>
+                </div>
+
+                <!-- Current Clinics -->
+                <div class="card">
+                    <h3>Current Clients (3 Clinics)</h3>
+                    <div class="grid-3">
+                        <div class="clinic-card active">
+                            <h5>Clinic 1</h5>
+                            <input type="text" id="clinic1Name" value="TeleHealth Partners" style="margin-bottom: 0.5rem;">
+                            <p>MRR: <input type="text" id="clinic1MRR" value="$500" style="width: 80px; display: inline;"></p>
+                            <p>Status: <span style="color: var(--success);">Active</span></p>
+                        </div>
+                        <div class="clinic-card active">
+                            <h5>Clinic 2</h5>
+                            <input type="text" id="clinic2Name" value="Virtual Care MD" style="margin-bottom: 0.5rem;">
+                            <p>MRR: <input type="text" id="clinic2MRR" value="$500" style="width: 80px; display: inline;"></p>
+                            <p>Status: <span style="color: var(--success);">Active</span></p>
+                        </div>
+                        <div class="clinic-card active">
+                            <h5>Clinic 3</h5>
+                            <input type="text" id="clinic3Name" value="MedConnect Pro" style="margin-bottom: 0.5rem;">
+                            <p>MRR: <input type="text" id="clinic3MRR" value="$500" style="width: 80px; display: inline;"></p>
+                            <p>Status: <span style="color: var(--success);">Active</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clinic Pipeline -->
+                <div class="card">
+                    <h3>Clinic Acquisition Pipeline</h3>
+                    <table class="projection-table">
+                        <thead>
+                            <tr>
+                                <th>Stage</th>
+                                <th>Count</th>
+                                <th>Potential MRR</th>
+                                <th>Expected Close</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Active Clients</td>
+                                <td><input type="number" value="3" id="pipelineActive"></td>
+                                <td>$1,500</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>In Negotiation</td>
+                                <td><input type="number" value="0" id="pipelineNegotiation"></td>
+                                <td><input type="text" value="$0" id="pipelineNegMRR"></td>
+                                <td><input type="text" value="-" id="pipelineNegClose"></td>
+                            </tr>
+                            <tr>
+                                <td>Demo Scheduled</td>
+                                <td><input type="number" value="0" id="pipelineDemo"></td>
+                                <td><input type="text" value="$0" id="pipelineDemoMRR"></td>
+                                <td><input type="text" value="-" id="pipelineDemoClose"></td>
+                            </tr>
+                            <tr>
+                                <td>Qualified Leads</td>
+                                <td><input type="number" value="0" id="pipelineLeads"></td>
+                                <td><input type="text" value="$0" id="pipelineLeadsMRR"></td>
+                                <td><input type="text" value="-" id="pipelineLeadsClose"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Growth Targets -->
+                <div class="card">
+                    <h3>Clinic Growth Targets</h3>
+                    <div class="grid-5">
+                        <div class="kpi-card on-track">
+                            <div class="label">Current</div>
+                            <div class="value">3</div>
+                            <div class="target">$1.5K MRR</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Year 1</div>
+                            <div class="value">10</div>
+                            <div class="target">$10K MRR</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Year 2</div>
+                            <div class="value">25</div>
+                            <div class="target">$25K MRR</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Year 3</div>
+                            <div class="value">50</div>
+                            <div class="target">$50K MRR</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="label">Year 5</div>
+                            <div class="value">100+</div>
+                            <div class="target">$100K MRR</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-outline" onclick="showSection('projections')">← 5-Year Projections</button>
+                    <button class="btn btn-primary" onclick="showSection('executive')">Business Plan →</button>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="section" id="section-executive">
+                <div class="section-header">
+                    <h2>Executive Summary</h2>
+                    <p>Your elevator pitch for investors.</p>
+                </div>
+
+                <div class="card">
+                    <h3>The Problem</h3>
+                    <textarea id="problemStatement">Telemedicine clinics struggle with patient retention (high churn), low lifetime value (LTV), and inefficient operations. Traditional healthcare software lacks AI-powered personalization and predictive capabilities.</textarea>
+                </div>
+
+                <div class="card">
+                    <h3>The Solution</h3>
+                    <textarea id="solution">a2v2.ai provides proprietary AI technology specifically designed for telemedicine clinics that:
+- Increases patient LTV through personalized engagement
+- Reduces churn with predictive intervention
+- Automates administrative workflows
+- Delivers actionable insights for clinic growth
+
+Our AI-first approach creates a defensible moat with 90% gross margins.</textarea>
+                </div>
+
+                <div class="card">
+                    <h3>The Ask</h3>
+                    <div class="grid-2">
                         <div class="form-group">
-                            <label>Blended CAC</label>
-                            <input type="text" value="$50">
+                            <label>Current Valuation</label>
+                            <input type="text" value="$800K - $1.5M" readonly>
                         </div>
                         <div class="form-group">
-                            <label>Average LTV</label>
-                            <input type="text" value="$600">
+                            <label>Target Exit Valuation</label>
+                            <input type="text" value="$10,000,000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Key Investment Highlights</label>
+                        <textarea>• Bootstrapped & profitable (47% margin)
+• Proprietary AI technology
+• 3 paying clients generating $75K annual revenue
+• Targeting $600K ARR in 3 years (100% CAGR)
+• Large TAM: $45B AI healthcare market
+• First-mover advantage in telemedicine AI</textarea>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-outline" onclick="showSection('clinics')">← Clinic Tracker</button>
+                    <button class="btn btn-primary" onclick="showSection('market')">Market Analysis →</button>
+                </div>
+            </div>
+
+            <!-- Market Analysis -->
+            <div class="section" id="section-market">
+                <div class="section-header">
+                    <h2>Market Analysis</h2>
+                    <p>Market size, competition, and positioning.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Market Size</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>TAM</label>
+                            <input type="text" value="$45B - AI in Healthcare by 2026">
+                        </div>
+                        <div class="form-group">
+                            <label>SAM</label>
+                            <input type="text" value="$5B - Telemedicine Software">
+                        </div>
+                        <div class="form-group">
+                            <label>SOM</label>
+                            <input type="text" value="$500M - AI Telemedicine Tools">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Competitive Advantage</h3>
+                    <textarea id="competitiveAdvantage">1. Proprietary AI Technology: Custom-built for telemedicine workflows
+2. Focus on LTV & Churn: Unique positioning vs. general telehealth platforms
+3. High Margins: 47% EBITDA margin (AI-enabled efficiency)
+4. First-Mover: Early entrant in AI-specific telemedicine tools
+5. Bootstrapped: Capital efficient, no dilution</textarea>
+                </div>
+
+                <div class="card">
+                    <h3>Comparable Companies</h3>
+                    <table class="projection-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Revenue</th>
+                                <th>Multiple</th>
+                                <th>Valuation</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Teladoc</td>
+                                <td>$2.4B</td>
+                                <td>0.7x</td>
+                                <td>$1.7B</td>
+                                <td>Mature, public</td>
+                            </tr>
+                            <tr>
+                                <td>Ro</td>
+                                <td>~$90M</td>
+                                <td>~76x</td>
+                                <td>~$7B</td>
+                                <td>High-growth, private</td>
+                            </tr>
+                            <tr>
+                                <td>Hims & Hers</td>
+                                <td>$900M</td>
+                                <td>~8x</td>
+                                <td>$7.2B</td>
+                                <td>Public, telehealth</td>
+                            </tr>
+                            <tr style="background: rgba(139, 92, 246, 0.1);">
+                                <td><strong>a2v2.ai</strong></td>
+                                <td>$75K</td>
+                                <td>20-30x</td>
+                                <td>$800K-$1.5M</td>
+                                <td>Early, AI premium</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-outline" onclick="showSection('executive')">← Executive Summary</button>
+                    <button class="btn btn-primary" onclick="showSection('financial')">Financial Plan →</button>
+                </div>
+            </div>
+
+            <!-- Financial Plan -->
+            <div class="section" id="section-financial">
+                <div class="section-header">
+                    <h2>Financial Plan</h2>
+                    <p>Current financials and projections.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Current Financial Snapshot</h3>
+                    <div class="grid-4">
+                        <div class="kpi-card on-track">
+                            <div class="label">Annual Revenue</div>
+                            <div class="value">$75K</div>
+                            <div class="target">Run rate</div>
+                        </div>
+                        <div class="kpi-card on-track">
+                            <div class="label">Annual Costs</div>
+                            <div class="value">$40K</div>
+                            <div class="target">Operating</div>
+                        </div>
+                        <div class="kpi-card on-track">
+                            <div class="label">EBITDA</div>
+                            <div class="value">$35K</div>
+                            <div class="target">47% margin</div>
+                        </div>
+                        <div class="kpi-card on-track">
+                            <div class="label">Months Operating</div>
+                            <div class="value">4</div>
+                            <div class="target">Since Aug 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Unit Economics</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Average Contract Value</label>
+                            <input type="text" value="$6,000/year ($500/mo)">
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Lifetime</label>
+                            <input type="text" value="24 months (target)">
+                        </div>
+                        <div class="form-group">
+                            <label>Lifetime Value (LTV)</label>
+                            <input type="text" value="$12,000">
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>CAC (Est.)</label>
+                            <input type="text" value="$1,500">
                         </div>
                         <div class="form-group">
                             <label>LTV:CAC Ratio</label>
-                            <input type="text" value="12:1" style="color: var(--success);">
+                            <input type="text" value="8:1" style="color: var(--success);">
                         </div>
                         <div class="form-group">
                             <label>Payback Period</label>
@@ -1266,587 +1170,173 @@ Target Metrics:
                     </div>
                 </div>
 
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('marketing')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('modern')">Next: 2025 Modern Elements →</button>
-                </div>
-            </div>
-
-            <!-- Section 7: Modern 2025 Elements -->
-            <div class="section" id="section-modern">
-                <div class="section-header">
-                    <h2>7. The 2025 Twist: Modern Elements</h2>
-                    <p>Investors increasingly want to see ESG, AI integration, and lean methodologies.</p>
-                </div>
-
                 <div class="card">
-                    <h3><span class="badge badge-esg">ESG</span> Environmental, Social & Governance</h3>
-                    <div class="form-group">
-                        <label>Environmental Impact</label>
-                        <textarea id="esgEnvironment">- 100% cloud-based = no physical infrastructure waste
-- Remote-first company = reduced commuting emissions
-- Digital-first healthcare = fewer patient travel miles
-- Carbon-neutral goal by 2026 (carbon offset program)</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Social Responsibility</label>
-                        <textarea id="esgSocial">- Healthcare accessibility: Serving underserved communities
-- Affordable pricing: $4.99 entry point for all income levels
-- Diversity: Committed to diverse hiring (50% target)
-- Mental health: Free mental wellness resources for users
-- Community health: 1% of revenue to health nonprofits</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Governance</label>
-                        <textarea id="esgGovernance">- Independent advisory board
-- Transparent AI decision-making
-- HIPAA and SOC 2 compliance
-- Regular third-party audits
-- Clear data privacy policies</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3><span class="badge badge-ai">AI</span> AI Integration</h3>
-                    <div class="form-group">
-                        <label>How is your business using AI?</label>
-                        <textarea id="aiIntegration">CORE PRODUCT (AI-First):
-- Personalized health guidance engine (GPT-4 + custom models)
-- Symptom analysis and triage recommendations
-- Health trend prediction and early warning
-
-OPERATIONS:
-- AI-powered customer support (80% automated resolution)
-- Predictive churn modeling
-- Dynamic pricing optimization
-- Automated content generation
-
-FUTURE AI ROADMAP:
-- Integration with medical imaging AI
-- Voice-first health assistant
-- Predictive health monitoring with wearables</textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3><span class="badge badge-lean">LEAN</span> Lean Canvas (One-Page Plan)</h3>
-                    <p style="color: #94a3b8; margin-bottom: 1rem;">A condensed version of your business plan for quick reference and testing.</p>
-
-                    <div class="lean-canvas">
-                        <div class="lean-box" style="grid-row: span 2;">
-                            <h5>Problem</h5>
-                            <textarea>1. Healthcare too expensive
-2. Long wait times
-3. Generic advice
-4. No 24/7 access</textarea>
-                        </div>
-                        <div class="lean-box">
-                            <h5>Solution</h5>
-                            <textarea>AI-powered 24/7 health guidance at 90% lower cost</textarea>
-                        </div>
-                        <div class="lean-box" style="grid-row: span 2;">
-                            <h5>Unique Value Prop</h5>
-                            <textarea>Personalized AI health guidance 10x faster, 90% cheaper than traditional care</textarea>
-                        </div>
-                        <div class="lean-box">
-                            <h5>Unfair Advantage</h5>
-                            <textarea>Proprietary AI, 90% margins, first-mover</textarea>
-                        </div>
-                        <div class="lean-box" style="grid-row: span 2;">
-                            <h5>Customer Segments</h5>
-                            <textarea>1. Health-conscious professionals
-2. Healthcare organizations
-3. Employer wellness programs</textarea>
-                        </div>
-                        <div class="lean-box">
-                            <h5>Key Metrics</h5>
-                            <textarea>MRR, Subscribers, Churn, NPS, LTV:CAC</textarea>
-                        </div>
-                        <div class="lean-box">
-                            <h5>Channels</h5>
-                            <textarea>Content, Paid ads, Partnerships, Referrals</textarea>
-                        </div>
-                        <div class="lean-box" style="grid-column: span 2;">
-                            <h5>Cost Structure</h5>
-                            <textarea>Team (60%), Marketing (25%), Infrastructure (10%), Other (5%)</textarea>
-                        </div>
-                        <div class="lean-box" style="grid-column: span 3;">
-                            <h5>Revenue Streams</h5>
-                            <textarea>Subscriptions ($19.99-$499/mo) - 80% | Engineering Services - 15% | Pay-per-use - 5%</textarea>
-                        </div>
+                    <h3>Profitability Chart</h3>
+                    <div class="chart-container">
+                        <canvas id="profitChart"></canvas>
                     </div>
                 </div>
 
                 <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('financial')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('checklist')">Next: Success Checklist →</button>
+                    <button class="btn btn-outline" onclick="showSection('market')">← Market Analysis</button>
+                    <button class="btn btn-success" onclick="exportData()">Export Full Plan</button>
                 </div>
             </div>
-
-            <!-- Section 8: Success Checklist -->
-            <div class="section" id="section-checklist">
-                <div class="section-header">
-                    <h2>8. Success Checklist</h2>
-                    <p>Ensure your business plan meets all key criteria before presenting to investors.</p>
-                </div>
-
-                <div class="card">
-                    <h3>Plan Quality Checklist</h3>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Brevity</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Keep it under 20 pages (plus appendix)</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Clarity</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Use simple language; avoid "corporate speak" and jargon</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Evidence</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Back up claims with real data, surveys, or pilot results</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Design</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Use charts and visuals to make data easy to digest</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Executive Summary Complete</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Problem, solution, and ask clearly defined</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Market Validated</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">TAM/SAM/SOM defined with credible sources</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Competitive Advantage Clear</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Why customers choose you over alternatives</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Financials Realistic</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">3-5 year projections with clear assumptions</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Team Credibility</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">Founder-market fit demonstrated</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleCheck(this)">
-                        <input type="checkbox">
-                        <div>
-                            <strong>Modern Elements Included</strong>
-                            <p style="color: #94a3b8; font-size: 0.85rem;">ESG, AI strategy, and lean approach addressed</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Investor-Ready Score</h3>
-                    <div style="text-align: center; padding: 2rem;">
-                        <div id="scoreCircle" style="width: 150px; height: 150px; border-radius: 50%; border: 10px solid var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                            <span style="font-size: 3rem; font-weight: 700;" id="scoreValue">0%</span>
-                        </div>
-                        <p style="margin-top: 1rem; color: #94a3b8;" id="scoreMessage">Complete the checklist above</p>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('modern')">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextSection('dashboard')">View Financial Dashboard →</button>
-                </div>
-            </div>
-
-            <!-- Section: Dashboard -->
-            <div class="section" id="section-dashboard">
-                <div class="section-header">
-                    <h2>Financial Dashboard</h2>
-                    <p>Interactive visualization of your projections and path to $10M exit.</p>
-                </div>
-
-                <!-- Scenario Selector -->
-                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <button class="btn btn-primary" onclick="selectScenario('balanced')">Balanced (15%/mo)</button>
-                    <button class="btn btn-outline" onclick="selectScenario('conservative')">Conservative (10%/mo)</button>
-                    <button class="btn btn-outline" onclick="selectScenario('aggressive')">Aggressive (25%/mo)</button>
-                </div>
-
-                <!-- Exit Timeline -->
-                <div class="card" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(124, 58, 237, 0.2)); border-color: rgba(99, 102, 241, 0.3);">
-                    <h3 style="color: #a5b4fc;">Path to $10M Valuation</h3>
-                    <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
-                        <div style="flex: 1; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
-                            <div id="exitProgress" style="height: 100%; background: linear-gradient(90deg, var(--primary), var(--purple)); width: 0%; transition: width 0.5s;"></div>
-                        </div>
-                        <span id="exitProgressText">0%</span>
-                    </div>
-                    <div class="grid-4" style="text-align: center; margin-top: 1rem;">
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 700;" id="exitMonths">--</div>
-                            <div style="color: #94a3b8; font-size: 0.8rem;">Months to Exit</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 700;" id="exitDate">--</div>
-                            <div style="color: #94a3b8; font-size: 0.8rem;">Target Date</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 700;" id="requiredARR">--</div>
-                            <div style="color: #94a3b8; font-size: 0.8rem;">Required ARR</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 700;" id="exitStatus">--</div>
-                            <div style="color: #94a3b8; font-size: 0.8rem;">Status</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts -->
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>MRR Growth</h3>
-                        <div class="chart-container" style="height: 250px;">
-                            <canvas id="mrrChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Valuation Trajectory</h3>
-                        <div class="chart-container" style="height: 250px;">
-                            <canvas id="valuationChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card">
-                        <h3>Subscriber Growth</h3>
-                        <div class="chart-container" style="height: 250px;">
-                            <canvas id="subscriberChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>Revenue vs Net Income</h3>
-                        <div class="chart-container" style="height: 250px;">
-                            <canvas id="incomeChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-nav">
-                    <button class="btn btn-outline" onclick="prevSection('checklist')">← Back to Checklist</button>
-                    <button class="btn btn-success" onclick="showExportModal()">Export Complete Plan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Export Modal -->
-    <div class="modal-overlay" id="exportModal">
-        <div class="modal">
-            <h2>Export Business Plan</h2>
-            <p style="color: #94a3b8; margin-bottom: 1.5rem;">Download your complete business plan in various formats.</p>
-
-            <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="exportPlan('pdf')">
-                Download as PDF
-            </button>
-            <button class="btn btn-outline" style="width: 100%; margin-bottom: 1rem;" onclick="exportPlan('doc')">
-                Download as Word Document
-            </button>
-            <button class="btn btn-outline" style="width: 100%; margin-bottom: 1rem;" onclick="exportPlan('json')">
-                Export Data (JSON)
-            </button>
-
-            <hr style="border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;">
-
-            <button class="btn btn-outline" style="width: 100%;" onclick="closeExportModal()">Cancel</button>
         </div>
     </div>
 
     <script>
+        // Initialize Charts
+        let projectionChart, profitChart;
+
+        function initCharts() {
+            // Projection Chart
+            const projCtx = document.getElementById('projectionChart');
+            if (projCtx) {
+                projectionChart = new Chart(projCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Current', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                        datasets: [{
+                            label: 'Target Revenue',
+                            data: [75000, 150000, 300000, 600000, 780000, 1014000],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }, {
+                            label: 'Target FCF',
+                            data: [35000, 60000, 120000, 240000, 312000, 405600],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }, {
+                            label: '$10M Valuation Line',
+                            data: [400000, 400000, 400000, 400000, 400000, 400000],
+                            borderColor: '#f59e0b',
+                            borderDash: [5, 5],
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top' } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { callback: v => '$' + (v / 1000) + 'K' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Profit Chart
+            const profitCtx = document.getElementById('profitChart');
+            if (profitCtx) {
+                profitChart = new Chart(profitCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [75000, 150000, 300000, 600000, 780000, 1014000],
+                            backgroundColor: '#3b82f6'
+                        }, {
+                            label: 'Costs',
+                            data: [40000, 90000, 180000, 360000, 468000, 608000],
+                            backgroundColor: '#ef4444'
+                        }, {
+                            label: 'Profit',
+                            data: [35000, 60000, 120000, 240000, 312000, 406000],
+                            backgroundColor: '#10b981'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'top' } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { callback: v => '$' + (v / 1000) + 'K' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
         // Navigation
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-            // Show selected section
             document.getElementById('section-' + sectionId).classList.add('active');
-            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            const navItem = document.querySelector(`[data-section="${sectionId}"]`);
+            if (navItem) navItem.classList.add('active');
 
-            // Initialize charts if dashboard
-            if (sectionId === 'dashboard' && !window.chartsInitialized) {
+            if ((sectionId === 'projections' || sectionId === 'financial') && !window.chartsInit) {
                 setTimeout(initCharts, 100);
-                window.chartsInitialized = true;
+                window.chartsInit = true;
             }
 
-            updateProgress();
             savePlan();
         }
 
-        function nextSection(sectionId) {
-            markCurrentComplete();
-            showSection(sectionId);
-        }
+        // Valuation Calculator
+        function recalculateValuation() {
+            const revenue = parseFloat(document.getElementById('inputRevenue').value) || 75000;
+            const mrr = parseFloat(document.getElementById('inputMRR').value) || 1500;
+            const multiple = parseFloat(document.getElementById('inputMultiple').value) || 25;
+            const arr = mrr * 12;
 
-        function prevSection(sectionId) {
-            showSection(sectionId);
-        }
+            // Update Revenue Multiple displays
+            document.getElementById('rmRevenue').textContent = '$' + revenue.toLocaleString();
+            document.getElementById('rmARR').textContent = '$' + arr.toLocaleString();
+            document.getElementById('rmRev20').textContent = '$' + (revenue * 20).toLocaleString();
+            document.getElementById('rmRev25').textContent = '$' + (revenue * 25).toLocaleString();
+            document.getElementById('rmRev30').textContent = '$' + (revenue * 30).toLocaleString();
+            document.getElementById('rmARR20').textContent = '$' + (arr * 20).toLocaleString();
+            document.getElementById('rmARR25').textContent = '$' + (arr * 25).toLocaleString();
+            document.getElementById('rmARR30').textContent = '$' + (arr * 30).toLocaleString();
 
-        function markCurrentComplete() {
-            const activeNav = document.querySelector('.nav-item.active');
-            if (activeNav) {
-                activeNav.classList.add('completed');
-            }
-        }
+            // Update main valuation display
+            const revenueMultipleVal = revenue * multiple;
+            document.getElementById('revenueMultipleVal').textContent = '$' + (revenueMultipleVal / 1000000).toFixed(1) + 'M';
 
-        function updateProgress() {
-            const completed = document.querySelectorAll('.nav-item.completed').length;
-            const total = 8;
-            const percent = Math.round((completed / total) * 100);
+            // Update KPIs
+            document.getElementById('currentMRR').textContent = '$' + mrr.toLocaleString();
+            document.getElementById('currentARR').textContent = '$' + arr.toLocaleString();
+            document.getElementById('sidebarMRR').textContent = '$' + mrr.toLocaleString();
 
-            document.getElementById('progressFill').style.width = percent + '%';
-            document.getElementById('progressText').textContent = completed + ' of ' + total;
-        }
+            // Update progress
+            const progress = Math.min(100, (mrr / 50000) * 100);
+            document.getElementById('mrrProgress').style.width = progress + '%';
 
-        // Checklist
-        function toggleCheck(item) {
-            const checkbox = item.querySelector('input');
-            checkbox.checked = !checkbox.checked;
-            item.classList.toggle('checked', checkbox.checked);
-            updateScore();
-        }
+            // Update valuation progress
+            const avgVal = (revenueMultipleVal + 1050000) / 2;
+            document.getElementById('currentValuation').textContent = '$' + (avgVal / 1000).toFixed(0) + 'K';
+            const valProgress = Math.min(100, (avgVal / 10000000) * 100);
+            document.getElementById('progressFill').style.width = valProgress + '%';
+            document.getElementById('goalProgress').textContent = valProgress.toFixed(0) + '%';
+            document.getElementById('achievementScore').textContent = valProgress.toFixed(0) + '%';
 
-        function updateScore() {
-            const total = document.querySelectorAll('.checklist-item').length;
-            const checked = document.querySelectorAll('.checklist-item.checked').length;
-            const percent = Math.round((checked / total) * 100);
-
-            document.getElementById('scoreValue').textContent = percent + '%';
-
-            const circle = document.getElementById('scoreCircle');
-            const message = document.getElementById('scoreMessage');
-
-            if (percent >= 80) {
+            // Update achievement circle color
+            const circle = document.getElementById('achievementCircle');
+            if (valProgress >= 80) {
                 circle.style.borderColor = '#10b981';
-                message.textContent = 'Excellent! Ready for investors.';
-            } else if (percent >= 50) {
+            } else if (valProgress >= 50) {
                 circle.style.borderColor = '#f59e0b';
-                message.textContent = 'Good progress. Complete remaining items.';
+            } else if (valProgress >= 25) {
+                circle.style.borderColor = '#3b82f6';
             } else {
                 circle.style.borderColor = '#ef4444';
-                message.textContent = 'Keep working on the checklist.';
-            }
-        }
-
-        // Charts
-        const projectionsData = {
-            conservative: generateProjections(0.10, 'conservative'),
-            balanced: generateProjections(0.15, 'balanced'),
-            aggressive: generateProjections(0.25, 'aggressive')
-        };
-
-        function generateProjections(rate, type) {
-            const projections = [];
-            let basic = 50, concierge = 10, enterprise = 1;
-
-            for (let month = 0; month <= 24; month++) {
-                const year = 2025 + Math.floor(month / 12);
-                const monthNum = (month % 12) + 1;
-
-                let growthMult = type === 'aggressive' ? 1.5 : type === 'conservative' ? 0.7 : 1.0;
-                let baseNew = type === 'aggressive' ? 50 : type === 'conservative' ? 20 : 35;
-
-                if (month > 0) {
-                    const churned = Math.floor(basic * 0.05);
-                    const upgrades = Math.floor(basic * 0.15);
-                    basic = Math.max(0, basic - churned - upgrades + Math.floor(basic * rate * growthMult) + baseNew);
-                    concierge = Math.max(0, concierge - Math.floor(concierge * 0.035) + upgrades + Math.floor(baseNew * 0.4));
-                    enterprise = Math.max(0, enterprise - enterprise * 0.015 + enterprise * rate * 0.5 + 0.3);
-                }
-
-                const mrr = basic * 19.99 + concierge * 39.99 + enterprise * 499;
-                projections.push({
-                    label: `${year}-${String(monthNum).padStart(2, '0')}`,
-                    mrr: Math.round(mrr),
-                    arr: Math.round(mrr * 12),
-                    valuation: Math.round(mrr * 12 * 4),
-                    subscribers: basic + concierge + Math.floor(enterprise),
-                    basic, concierge, enterprise: Math.round(enterprise * 10) / 10,
-                    grossRevenue: Math.round(mrr + 225 * 25 + (50 + basic * 0.3 + month * 10) * 4.99),
-                    netIncome: Math.round(mrr * 0.9 - 36500 * (1 + month / 48))
-                });
-            }
-            return projections;
-        }
-
-        let currentScenario = 'balanced';
-        let mrrChart, valuationChart, subscriberChart, incomeChart;
-
-        function initCharts() {
-            const data = projectionsData[currentScenario];
-            const labels = data.map(p => p.label);
-
-            Chart.defaults.color = '#94a3b8';
-            Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
-
-            mrrChart = new Chart(document.getElementById('mrrChart'), {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'MRR',
-                        data: data.map(p => p.mrr),
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }, {
-                        label: 'Target ($208K)',
-                        data: new Array(labels.length).fill(208333),
-                        borderColor: '#10b981',
-                        borderDash: [5, 5],
-                        pointRadius: 0
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' }}}}
-            });
-
-            valuationChart = new Chart(document.getElementById('valuationChart'), {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Valuation',
-                        data: data.map(p => p.valuation),
-                        borderColor: '#8b5cf6',
-                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }, {
-                        label: 'Target ($10M)',
-                        data: new Array(labels.length).fill(10000000),
-                        borderColor: '#f59e0b',
-                        borderDash: [5, 5],
-                        pointRadius: 0
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M' }}}}
-            });
-
-            subscriberChart = new Chart(document.getElementById('subscriberChart'), {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'Basic', data: data.map(p => p.basic), backgroundColor: '#3b82f6' },
-                        { label: 'Concierge', data: data.map(p => p.concierge), backgroundColor: '#8b5cf6' },
-                        { label: 'Enterprise', data: data.map(p => Math.round(p.enterprise)), backgroundColor: '#10b981' }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true }}}
-            });
-
-            incomeChart = new Chart(document.getElementById('incomeChart'), {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'Revenue', data: data.map(p => p.grossRevenue), borderColor: '#3b82f6', tension: 0.4 },
-                        { label: 'Net Income', data: data.map(p => p.netIncome), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4 }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' }}}}
-            });
-
-            updateDashboard();
-        }
-
-        function selectScenario(scenario) {
-            currentScenario = scenario;
-            document.querySelectorAll('.scenario-selector button, #section-dashboard .btn').forEach(b => b.classList.remove('btn-primary'));
-            event.target.classList.add('btn-primary');
-            event.target.classList.remove('btn-outline');
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            const data = projectionsData[currentScenario];
-            const last = data[data.length - 1];
-
-            let exitMonth = data.findIndex(p => p.valuation >= 10000000);
-
-            if (exitMonth >= 0) {
-                document.getElementById('exitMonths').textContent = exitMonth;
-                document.getElementById('exitDate').textContent = data[exitMonth].label;
-                document.getElementById('requiredARR').textContent = '$' + (data[exitMonth].arr / 1000000).toFixed(1) + 'M';
-                document.getElementById('exitStatus').textContent = 'Achievable';
-                document.getElementById('exitStatus').style.color = '#10b981';
-                document.getElementById('exitProgress').style.width = '100%';
-                document.getElementById('exitProgressText').textContent = '100%';
-            } else {
-                const progress = Math.round((last.valuation / 10000000) * 100);
-                document.getElementById('exitMonths').textContent = '24+';
-                document.getElementById('exitDate').textContent = 'Extended';
-                document.getElementById('requiredARR').textContent = '$2.5M';
-                document.getElementById('exitStatus').textContent = 'In Progress';
-                document.getElementById('exitStatus').style.color = '#f59e0b';
-                document.getElementById('exitProgress').style.width = progress + '%';
-                document.getElementById('exitProgressText').textContent = progress + '%';
             }
 
-            if (mrrChart) {
-                const labels = data.map(p => p.label);
-                mrrChart.data.labels = labels;
-                mrrChart.data.datasets[0].data = data.map(p => p.mrr);
-                mrrChart.update();
-
-                valuationChart.data.labels = labels;
-                valuationChart.data.datasets[0].data = data.map(p => p.valuation);
-                valuationChart.update();
-
-                subscriberChart.data.labels = labels;
-                subscriberChart.data.datasets[0].data = data.map(p => p.basic);
-                subscriberChart.data.datasets[1].data = data.map(p => p.concierge);
-                subscriberChart.data.datasets[2].data = data.map(p => Math.round(p.enterprise));
-                subscriberChart.update();
-
-                incomeChart.data.labels = labels;
-                incomeChart.data.datasets[0].data = data.map(p => p.grossRevenue);
-                incomeChart.data.datasets[1].data = data.map(p => p.netIncome);
-                incomeChart.update();
-            }
+            savePlan();
         }
 
         // Save/Load
@@ -1856,11 +1346,11 @@ FUTURE AI ROADMAP:
             inputs.forEach(input => {
                 if (input.id) data[input.id] = input.value;
             });
-            localStorage.setItem('a2v2_business_plan', JSON.stringify(data));
+            localStorage.setItem('a2v2_goal_tracker', JSON.stringify(data));
         }
 
         function loadPlan() {
-            const saved = localStorage.getItem('a2v2_business_plan');
+            const saved = localStorage.getItem('a2v2_goal_tracker');
             if (saved) {
                 const data = JSON.parse(saved);
                 Object.keys(data).forEach(id => {
@@ -1870,41 +1360,30 @@ FUTURE AI ROADMAP:
             }
         }
 
-        // Export
-        function showExportModal() {
-            document.getElementById('exportModal').classList.add('active');
-        }
-
-        function closeExportModal() {
-            document.getElementById('exportModal').classList.remove('active');
-        }
-
-        function exportPlan(format) {
+        function exportData() {
             savePlan();
-            const data = JSON.parse(localStorage.getItem('a2v2_business_plan') || '{}');
-
-            if (format === 'json') {
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'a2v2_business_plan.json';
-                a.click();
-            } else {
-                alert(`${format.toUpperCase()} export coming soon! For now, use Print (Ctrl+P) to save as PDF.`);
-            }
-            closeExportModal();
+            const data = JSON.parse(localStorage.getItem('a2v2_goal_tracker') || '{}');
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'a2v2_goal_tracker_' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadPlan();
-            updateProgress();
-            updateScore();
+            recalculateValuation();
 
             // Auto-save on change
             document.querySelectorAll('input, textarea, select').forEach(el => {
-                el.addEventListener('change', savePlan);
+                el.addEventListener('change', () => {
+                    savePlan();
+                    if (el.id && el.id.startsWith('input')) {
+                        recalculateValuation();
+                    }
+                });
             });
         });
     </script>

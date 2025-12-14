@@ -1,0 +1,3 @@
+# a2v2.ai Business Plan 2026
+# No external dependencies required - uses Python standard library only
+# Python 3.8+ recommended

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a2v2.ai Business Plan 2026 - Interactive Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .scenario-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .scenario-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .scenario-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .scenario-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .kpi-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .kpi-value.success {
+            color: var(--success);
+        }
+
+        .kpi-value.warning {
+            color: var(--warning);
+        }
+
+        .kpi-subtitle {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chart-card h3 {
+            color: #f8fafc;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .product-table th,
+        .product-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .product-table th {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .product-table td {
+            color: #e2e8f0;
+        }
+
+        .product-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .margin-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .margin-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34d399);
+            border-radius: 4px;
+        }
+
+        .exit-timeline {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(124, 58, 237, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .exit-timeline h2 {
+            color: #a5b4fc;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .exit-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .exit-progress-bar {
+            flex: 1;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .exit-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #8b5cf6);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .exit-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .exit-stat {
+            text-align: center;
+        }
+
+        .exit-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .exit-stat-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .milestones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .milestone {
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .milestone.achieved {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .milestone h4 {
+            color: #f8fafc;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .milestone p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .milestone .target {
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>a2v2.ai Business Plan 2026</h1>
+        <p>Interactive Dashboard - Path to $10M Exit</p>
+    </div>
+
+    <div class="container">
+        <!-- Scenario Selector -->
+        <div class="scenario-selector">
+            <button class="scenario-btn active" onclick="selectScenario('balanced')">
+                Balanced Growth (15%/mo)
+            </button>
+            <button class="scenario-btn" onclick="selectScenario('conservative')">
+                Conservative (10%/mo)
+            </button>
+            <button class="scenario-btn" onclick="selectScenario('aggressive')">
+                Aggressive (25%/mo)
+            </button>
+        </div>
+
+        <!-- Exit Timeline -->
+        <div class="exit-timeline">
+            <h2>Path to $10M Valuation</h2>
+            <div class="exit-progress">
+                <div class="exit-progress-bar">
+                    <div class="exit-progress-fill" id="exitProgress" style="width: 0%"></div>
+                </div>
+                <span id="exitProgressText">0%</span>
+            </div>
+            <div class="exit-stats">
+                <div class="exit-stat">
+                    <div class="exit-stat-value" id="exitMonths">--</div>
+                    <div class="exit-stat-label">Months to Exit</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="exit-stat-value" id="exitDate">--</div>
+                    <div class="exit-stat-label">Target Exit Date</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="exit-stat-value" id="requiredARR">--</div>
+                    <div class="exit-stat-label">Required ARR</div>
+                </div>
+                <div class="exit-stat">
+                    <div class="exit-stat-value" id="exitStatus">--</div>
+                    <div class="exit-stat-label">Status</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Current MRR</div>
+                <div class="kpi-value" id="currentMRR">$1,899</div>
+                <div class="kpi-subtitle">Monthly Recurring Revenue</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Target MRR</div>
+                <div class="kpi-value success">$208,333</div>
+                <div class="kpi-subtitle">For $10M @ 4x ARR</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Total Subscribers</div>
+                <div class="kpi-value" id="totalSubs">61</div>
+                <div class="kpi-subtitle">Active subscriptions</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Projected Valuation</div>
+                <div class="kpi-value" id="projectedVal">$91K</div>
+                <div class="kpi-subtitle" id="projectedValSub">End of projection</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Gross Margin</div>
+                <div class="kpi-value success">90%</div>
+                <div class="kpi-subtitle">Across all products</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">LTV:CAC Ratio</div>
+                <div class="kpi-value success">12:1</div>
+                <div class="kpi-subtitle">Healthy > 3:1</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>MRR Growth Projection</h3>
+                <div class="chart-container">
+                    <canvas id="mrrChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Valuation Trajectory</h3>
+                <div class="chart-container">
+                    <canvas id="valuationChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Subscriber Growth</h3>
+                <div class="chart-container">
+                    <canvas id="subscriberChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Revenue vs Net Income</h3>
+                <div class="chart-container">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Lines -->
+        <div class="chart-card" style="margin-bottom: 2rem;">
+            <h3>Product Lines Analysis</h3>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>COGS</th>
+                        <th>Margin</th>
+                        <th>Margin %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pay For Access</td>
+                        <td>$4.99</td>
+                        <td>$3.99</td>
+                        <td>$1.00</td>
+                        <td>
+                            <div class="margin-bar">
+                                <div class="margin-bar-fill" style="width: 20%"></div>
+                            </div>
+                            20%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Subscription Module</td>
+                        <td>$19.99</td>
+                        <td>$2.00</td>
+                        <td>$17.99</td>
+                        <td>
+                            <div class="margin-bar">
+                                <div class="margin-bar-fill" style="width: 90%"></div>
+                            </div>
+                            90%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Subscription Concierge Medicine</td>
+                        <td>$39.99</td>
+                        <td>$4.00</td>
+                        <td>$35.99</td>
+                        <td>
+                            <div class="margin-bar">
+                                <div class="margin-bar-fill" style="width: 90%"></div>
+                            </div>
+                            90%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Enterprise Subscription</td>
+                        <td>$499.00</td>
+                        <td>$49.90</td>
+                        <td>$449.10</td>
+                        <td>
+                            <div class="margin-bar">
+                                <div class="margin-bar-fill" style="width: 90%"></div>
+                            </div>
+                            90%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Engineering Services</td>
+                        <td>$25.00/hr</td>
+                        <td>$0.00</td>
+                        <td>$25.00</td>
+                        <td>
+                            <div class="margin-bar">
+                                <div class="margin-bar-fill" style="width: 100%"></div>
+                            </div>
+                            100%
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Milestones -->
+        <div class="chart-card">
+            <h3>Key Milestones to Exit</h3>
+            <div class="milestones">
+                <div class="milestone">
+                    <h4>Q1 2025 - Launch</h4>
+                    <p>Product-market fit, first 100 users</p>
+                    <div class="target">Target: $5K MRR</div>
+                </div>
+                <div class="milestone">
+                    <h4>Q2 2025 - Traction</h4>
+                    <p>Marketing engine running, referrals active</p>
+                    <div class="target">Target: $15K MRR</div>
+                </div>
+                <div class="milestone">
+                    <h4>Q3 2025 - Scale</h4>
+                    <p>Seed funding, team expansion</p>
+                    <div class="target">Target: $40K MRR</div>
+                </div>
+                <div class="milestone">
+                    <h4>Q4 2025 - Growth</h4>
+                    <p>Enterprise deals, break-even</p>
+                    <div class="target">Target: $80K MRR</div>
+                </div>
+                <div class="milestone">
+                    <h4>Q1 2026 - Accelerate</h4>
+                    <p>Strong unit economics, profitable</p>
+                    <div class="target">Target: $120K MRR</div>
+                </div>
+                <div class="milestone">
+                    <h4>Q2 2026 - Exit Ready</h4>
+                    <p>Due diligence ready, buyer conversations</p>
+                    <div class="target">Target: $180K MRR</div>
+                </div>
+                <div class="milestone achieved">
+                    <h4>Q3 2026 - EXIT</h4>
+                    <p>$10M valuation achieved</p>
+                    <div class="target">Target: $210K+ MRR</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Projection data (generated from Python model)
+        const projectionsData = {
+            conservative: {
+                name: "Conservative Growth",
+                growth_rate: 0.10,
+                projections: generateProjections(0.10, 'conservative'),
+                exit_achievable: false,
+                months_to_exit: 24
+            },
+            balanced: {
+                name: "Balanced Growth",
+                growth_rate: 0.15,
+                projections: generateProjections(0.15, 'balanced'),
+                exit_achievable: true,
+                months_to_exit: 18
+            },
+            aggressive: {
+                name: "Aggressive Growth",
+                growth_rate: 0.25,
+                projections: generateProjections(0.25, 'aggressive'),
+                exit_achievable: true,
+                months_to_exit: 12
+            }
+        };
+
+        function generateProjections(rate, type) {
+            const projections = [];
+            let basic = 50, concierge = 10, enterprise = 1;
+            const churn = 0.05;
+            const upgradeRate = 0.15;
+
+            for (let month = 0; month <= 24; month++) {
+                const year = 2025 + Math.floor(month / 12);
+                const monthNum = (month % 12) + 1;
+
+                // Apply growth
+                let growthMult = type === 'aggressive' ? 1.5 : type === 'conservative' ? 0.7 : 1.0;
+                let baseNew = type === 'aggressive' ? 50 : type === 'conservative' ? 20 : 35;
+
+                if (month > 0) {
+                    const churned = Math.floor(basic * churn);
+                    const upgrades = Math.floor(basic * upgradeRate);
+                    const newBasic = Math.floor(basic * rate * growthMult) + baseNew;
+                    const newConcierge = Math.floor(concierge * rate * 0.9 * growthMult) + Math.floor(baseNew * 0.4);
+                    const newEnterprise = enterprise * rate * 0.5 + 0.3;
+
+                    basic = Math.max(0, basic - churned - upgrades + newBasic);
+                    concierge = Math.max(0, concierge - Math.floor(concierge * churn * 0.7) + upgrades + newConcierge);
+                    enterprise = Math.max(0, enterprise - enterprise * churn * 0.3 + newEnterprise);
+                }
+
+                const mrr = basic * 19.99 + concierge * 39.99 + enterprise * 499;
+                const arr = mrr * 12;
+                const valuation = arr * 4;
+
+                projections.push({
+                    month: monthNum,
+                    year: year,
+                    label: `${year}-${String(monthNum).padStart(2, '0')}`,
+                    mrr: Math.round(mrr),
+                    arr: Math.round(arr),
+                    valuation: Math.round(valuation),
+                    subscribers: basic + concierge + Math.floor(enterprise),
+                    basic: basic,
+                    concierge: concierge,
+                    enterprise: Math.round(enterprise * 10) / 10,
+                    grossRevenue: Math.round(mrr + 225 * 25 + (50 + basic * 0.3 + month * 10) * 4.99),
+                    netIncome: Math.round(mrr * 0.9 - 36500 * (1 + month / 48))
+                });
+            }
+            return projections;
+        }
+
+        let currentScenario = 'balanced';
+        let mrrChart, valuationChart, subscriberChart, incomeChart;
+
+        function initCharts() {
+            const data = projectionsData[currentScenario].projections;
+            const labels = data.map(p => p.label);
+
+            // Chart.js defaults
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
+
+            // MRR Chart
+            const mrrCtx = document.getElementById('mrrChart').getContext('2d');
+            mrrChart = new Chart(mrrCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'MRR',
+                        data: data.map(p => p.mrr),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Target MRR ($208K)',
+                        data: new Array(labels.length).fill(208333),
+                        borderColor: '#10b981',
+                        borderDash: [5, 5],
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => '$' + (value / 1000).toFixed(0) + 'K'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Valuation Chart
+            const valCtx = document.getElementById('valuationChart').getContext('2d');
+            valuationChart = new Chart(valCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Implied Valuation',
+                        data: data.map(p => p.valuation),
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Target ($10M)',
+                        data: new Array(labels.length).fill(10000000),
+                        borderColor: '#f59e0b',
+                        borderDash: [5, 5],
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => '$' + (value / 1000000).toFixed(1) + 'M'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Subscriber Chart
+            const subCtx = document.getElementById('subscriberChart').getContext('2d');
+            subscriberChart = new Chart(subCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Basic',
+                        data: data.map(p => p.basic),
+                        backgroundColor: '#3b82f6'
+                    }, {
+                        label: 'Concierge',
+                        data: data.map(p => p.concierge),
+                        backgroundColor: '#8b5cf6'
+                    }, {
+                        label: 'Enterprise',
+                        data: data.map(p => Math.round(p.enterprise)),
+                        backgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, beginAtZero: true }
+                    }
+                }
+            });
+
+            // Income Chart
+            const incCtx = document.getElementById('incomeChart').getContext('2d');
+            incomeChart = new Chart(incCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Gross Revenue',
+                        data: data.map(p => p.grossRevenue),
+                        borderColor: '#3b82f6',
+                        tension: 0.4
+                    }, {
+                        label: 'Net Income',
+                        data: data.map(p => p.netIncome),
+                        borderColor: p => p.netIncome >= 0 ? '#10b981' : '#ef4444',
+                        backgroundColor: data.map(p => p.netIncome >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'),
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: value => '$' + (value / 1000).toFixed(0) + 'K'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDashboard() {
+            const scenario = projectionsData[currentScenario];
+            const data = scenario.projections;
+            const last = data[data.length - 1];
+
+            // Find exit month
+            let exitMonth = -1;
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].valuation >= 10000000) {
+                    exitMonth = i;
+                    break;
+                }
+            }
+
+            // Update KPIs
+            document.getElementById('projectedVal').textContent = '$' + (last.valuation / 1000000).toFixed(1) + 'M';
+            document.getElementById('projectedValSub').textContent = 'At month 24';
+            document.getElementById('totalSubs').textContent = last.subscribers.toLocaleString();
+
+            // Update exit timeline
+            if (exitMonth >= 0) {
+                const exitData = data[exitMonth];
+                document.getElementById('exitMonths').textContent = exitMonth;
+                document.getElementById('exitDate').textContent = exitData.label;
+                document.getElementById('requiredARR').textContent = '$' + (exitData.arr / 1000000).toFixed(1) + 'M';
+                document.getElementById('exitStatus').textContent = 'Achievable';
+                document.getElementById('exitStatus').style.color = '#10b981';
+                document.getElementById('exitProgress').style.width = '100%';
+                document.getElementById('exitProgressText').textContent = '100%';
+            } else {
+                const progress = Math.round((last.valuation / 10000000) * 100);
+                document.getElementById('exitMonths').textContent = '24+';
+                document.getElementById('exitDate').textContent = 'Beyond 2026';
+                document.getElementById('requiredARR').textContent = '$2.5M';
+                document.getElementById('exitStatus').textContent = 'Extended';
+                document.getElementById('exitStatus').style.color = '#f59e0b';
+                document.getElementById('exitProgress').style.width = progress + '%';
+                document.getElementById('exitProgressText').textContent = progress + '%';
+            }
+
+            // Update charts
+            const labels = data.map(p => p.label);
+
+            mrrChart.data.labels = labels;
+            mrrChart.data.datasets[0].data = data.map(p => p.mrr);
+            mrrChart.update();
+
+            valuationChart.data.labels = labels;
+            valuationChart.data.datasets[0].data = data.map(p => p.valuation);
+            valuationChart.update();
+
+            subscriberChart.data.labels = labels;
+            subscriberChart.data.datasets[0].data = data.map(p => p.basic);
+            subscriberChart.data.datasets[1].data = data.map(p => p.concierge);
+            subscriberChart.data.datasets[2].data = data.map(p => Math.round(p.enterprise));
+            subscriberChart.update();
+
+            incomeChart.data.labels = labels;
+            incomeChart.data.datasets[0].data = data.map(p => p.grossRevenue);
+            incomeChart.data.datasets[1].data = data.map(p => p.netIncome);
+            incomeChart.update();
+        }
+
+        function selectScenario(scenario) {
+            currentScenario = scenario;
+
+            // Update buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            updateDashboard();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateDashboard();
+        });
+    </script>
+</body>
+</html>
